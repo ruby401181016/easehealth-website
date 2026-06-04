@@ -27,116 +27,65 @@ export default function Navbar() {
     }, 180);
   };
 
+  const closeMobileMenu = () => {
+    setMobileOpen(false);
+    setOpenPrograms(false);
+  };
+
   return (
-    <>
-      <nav className="navbar">
-        <a href="/" className="logo">
-          EASE
-        </a>
+    <nav className="navbar">
+      <a href="/" className="logo" onClick={closeMobileMenu}>
+        EASE
+      </a>
 
-        <button
-          className="mobileButton"
-          onClick={() => setMobileOpen(!mobileOpen)}
-          aria-label="Toggle menu"
+      <button
+        className="mobileButton"
+        onClick={() => setMobileOpen(!mobileOpen)}
+        aria-label="Toggle menu"
+      >
+        {mobileOpen ? "✕" : "☰"}
+      </button>
+
+      <div className={`navLinks ${mobileOpen ? "show" : ""}`}>
+        <a href="/" className="navLink" onClick={closeMobileMenu}>Home</a>
+        <a href="/about" className="navLink" onClick={closeMobileMenu}>About</a>
+        <a href="/services" className="navLink" onClick={closeMobileMenu}>Services</a>
+
+        <div
+          className="programWrapper"
+          onMouseEnter={openProgramMenu}
+          onMouseLeave={closeProgramMenu}
         >
-          {mobileOpen ? "✕" : "☰"}
-        </button>
-
-        <div className={`navLinks ${mobileOpen ? "show" : ""}`}>
-          <a href="/" className="navLink">Home</a>
-          <a href="/about" className="navLink">About</a>
-          <a href="/services" className="navLink">Services</a>
-
-          <div
-            className="programWrapper"
-            onMouseEnter={openProgramMenu}
-            onMouseLeave={closeProgramMenu}
+          <button
+            className="navButton"
+            onClick={() => setOpenPrograms(!openPrograms)}
           >
-            <button
-              className="navButton"
-              onClick={() => setOpenPrograms(!openPrograms)}
-            >
-              Programs
-            </button>
+            Programs
+          </button>
 
-            {openPrograms && (
-              <div className="programMenu">
-                <div className="programMenuInner">
-                  {menuItems.map((item) => (
-                    <a key={item.href} href={item.href} className="programItem">
-                      <span className="programTitle">{item.title}</span>
-                      <span className="programLabel">{item.label}</span>
-                    </a>
-                  ))}
-                </div>
+          {openPrograms && (
+            <div className="programMenu">
+              <div className="programMenuInner">
+                {menuItems.map((item) => (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    className="programItem"
+                    onClick={closeMobileMenu}
+                  >
+                    <span className="programTitle">{item.title}</span>
+                    <span className="programLabel">{item.label}</span>
+                  </a>
+                ))}
               </div>
-            )}
-          </div>
-
-          <a href="/cases" className="navLink">Case Studies</a>
-          <a href="/blog" className="navLink">Blog</a>
-          <a href="/contact" className="navLink">Contact</a>
+            </div>
+          )}
         </div>
-      </nav>
 
-      <style jsx>{`
-        .navbar {
-          position: sticky;
-          top: 0;
-          z-index: 1000;
-          height: 80px;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 0 clamp(20px, 4vw, 48px);
-          background: rgba(248, 246, 242, 0.92);
-          backdrop-filter: blur(16px);
-          border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-        }
-
-        .logo { font-size: clamp(24px, 3vw, 30px); font-weight: 700; letter-spacing: 0.04em; text-decoration: none; color: #2d2d2d; }
-
-        .navLinks { display: flex; gap: clamp(18px, 2.4vw, 34px); align-items: center; font-size: 14px; letter-spacing: 0.05em; }
-
-        .navLink, .navButton { color: #2d2d2d; text-decoration: none; background: none; border: none; cursor: pointer; font-size: 14px; letter-spacing: 0.05em; font-family: inherit; padding: 0; }
-
-        .programWrapper { position: relative; }
-
-        .programMenu { position: absolute; top: 100%; right: 0; width: 300px; padding-top: 10px; background: transparent; z-index: 2000; }
-
-        .programMenuInner { background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(18px); border: 1px solid rgba(255, 255, 255, 0.7); border-radius: 22px; padding: 16px; box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08); }
-
-        .programItem { display: block; padding: 15px 16px; border-radius: 14px; text-decoration: none; color: #2d2d2d; margin-bottom: 8px; background: rgba(248, 246, 242, 0.48); transition: 0.25s; }
-        .programItem:hover { background: rgba(220, 239, 235, 0.75); }
-
-        .mobileButton { display: none; background: none; border: none; font-size: 28px; cursor: pointer; color: #2d2d2d; }
-
-        @media (max-width: 860px) {
-          .navbar { height: 72px; padding: 0 22px; }
-          .mobileButton { display: block; }
-          .navLinks {
-            position: absolute;
-            top: 72px;
-            left: 0;
-            right: 0;
-            display: none;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 0;
-            padding: 22px;
-            background: #f8f6f2;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-            /* 手機版滑動設定 */
-            max-height: calc(100vh - 72px);
-            overflow-y: auto;
-          }
-          .navLinks.show { display: flex; }
-          .navLink, .navButton { width: 100%; padding: 14px 0; font-size: 15px; text-align: left; }
-          .programWrapper { width: 100%; }
-          .programMenu { position: static; width: 100%; padding-top: 0; margin: 8px 0 12px; }
-          .programMenuInner { box-shadow: none; border-radius: 16px; padding: 12px; }
-        }
-      `}</style>
-    </>
+        <a href="/cases" className="navLink" onClick={closeMobileMenu}>Case Studies</a>
+        <a href="/blog" className="navLink" onClick={closeMobileMenu}>Blog</a>
+        <a href="/contact" className="navLink" onClick={closeMobileMenu}>Contact</a>
+      </div>
+    </nav>
   );
 }
