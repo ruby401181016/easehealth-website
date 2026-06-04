@@ -1,10 +1,23 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 export default function BodyCompositionPage() {
-  // 💡 同步風格 A 的高級感字體系統
-  const serifFont = "'Cormorant Garamond', 'Playfair Display', 'Noto Serif TC', Georgia, serif";
-  const sansFont = "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans TC', Helvetica, Arial, sans-serif";
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  const serifFont =
+    "'Cormorant Garamond', 'Playfair Display', 'Noto Serif TC', Georgia, serif";
+  const sansFont =
+    "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans TC', Helvetica, Arial, sans-serif";
 
   const topicsData = [
     {
@@ -45,7 +58,7 @@ export default function BodyCompositionPage() {
     <main
       style={{
         minHeight: "100vh",
-        background: "#f8f6f2", // EASE 經典米白
+        background: "#f8f6f2",
         color: "#2d2d2d",
         fontFamily: sansFont,
         WebkitFontSmoothing: "antialiased",
@@ -53,30 +66,29 @@ export default function BodyCompositionPage() {
     >
       <Navbar />
 
-      {/* Hero Section */}
       <section
         style={{
-          padding: "80px 24px 70px", // 🚀 優化後：縮小上下內襯，解決空格過大的空洞感
+          padding: isMobile ? "56px 24px 48px" : "80px 24px 70px",
           textAlign: "center",
-          background: "#ece7df",     // 沉穩沙色
+          background: "#ece7df",
         }}
       >
         <p
           style={{
-            letterSpacing: "0.35em",   // 精品感寬字距
+            letterSpacing: "0.35em",
             fontSize: "12px",
             color: "#8a847c",
-            marginBottom: 22,
+            marginBottom: 20,
             fontWeight: 400,
           }}
         >
-          BODY COMPOSITION & NUTRITION
+          BODY & NUTRITION
         </p>
 
         <h1
           style={{
-            fontFamily: serifFont,     // 優雅襯線明體
-            fontSize: "clamp(36px, 5vw, 46px)",
+            fontFamily: serifFont,
+            fontSize: "clamp(42px, 8vw, 56px)",
             marginBottom: 24,
             fontWeight: 400,
             letterSpacing: "0.04em",
@@ -89,7 +101,7 @@ export default function BodyCompositionPage() {
           style={{
             fontSize: "15px",
             color: "#5a5550",
-            maxWidth: "600px",
+            maxWidth: "620px",
             margin: "0 auto",
             lineHeight: "2.1",
             fontWeight: 300,
@@ -97,21 +109,19 @@ export default function BodyCompositionPage() {
           }}
         >
           從飲食觀念、外食策略到體態維持，
-          <br />
+          <br style={{ display: isMobile ? "none" : "block" }} />
           建立上班族也能持續執行的健康生活方式。
         </p>
       </section>
 
-      {/* Topics Section */}
       <section
         style={{
           maxWidth: "1180px",
           margin: "0 auto",
-          padding: "70px 24px 120px", // 🚀 優化後：降低頂部留白，讓區塊無縫且舒適地銜接
+          padding: isMobile ? "40px 30px 90px" : "70px 24px 120px",
         }}
       >
-        {/* Section Header */}
-        <div style={{ marginBottom: "64px" }}> {/* 🚀 微調：收攏標題下方間距，視覺更扎實 */}
+        <div style={{ marginBottom: isMobile ? "48px" : "64px" }}>
           <p
             style={{
               fontSize: "11px",
@@ -126,8 +136,8 @@ export default function BodyCompositionPage() {
 
           <h2
             style={{
-              fontFamily: serifFont, // 優雅明體
-              fontSize: "34px",
+              fontFamily: serifFont,
+              fontSize: isMobile ? "32px" : "34px",
               fontWeight: 400,
               letterSpacing: "0.03em",
             }}
@@ -136,12 +146,11 @@ export default function BodyCompositionPage() {
           </h2>
         </div>
 
-        {/* Dynamic交錯列表 */}
         <div
           style={{
             display: "flex",
             flexDirection: "column",
-            gap: "140px", // 保持大氣的項目間距
+            gap: isMobile ? "72px" : "140px",
           }}
         >
           {topicsData.map((topic, index) => {
@@ -152,20 +161,19 @@ export default function BodyCompositionPage() {
                 key={topic.id}
                 style={{
                   display: "flex",
-                  flexDirection: isEven ? "row-reverse" : "row",
+                  flexDirection: isMobile ? "column" : isEven ? "row-reverse" : "row",
                   alignItems: "center",
-                  gap: "80px",
+                  gap: isMobile ? "28px" : "80px",
                   flexWrap: "wrap",
                 }}
               >
-                {/* Image Box */}
-                <div style={{ flex: "1 1 400px" }}>
+                <div style={{ flex: isMobile ? "1 1 100%" : "1 1 400px", width: "100%" }}>
                   <div
                     style={{
                       width: "100%",
-                      aspectRatio: "16 / 10", // 黃金感電影感比例
+                      aspectRatio: "16 / 10",
                       overflow: "hidden",
-                      borderRadius: "4px",   // 精品微圓角
+                      borderRadius: "4px",
                       background: "#ece7df",
                       boxShadow: "0 20px 40px rgba(0,0,0,0.015)",
                     }}
@@ -183,15 +191,13 @@ export default function BodyCompositionPage() {
                   </div>
                 </div>
 
-                {/* Text Content Box */}
-                <div style={{ flex: "1 1 400px" }}>
+                <div style={{ flex: isMobile ? "1 1 100%" : "1 1 400px", width: "100%" }}>
                   <div
                     style={{
-                      borderTop: "1px solid rgba(0,0,0,0.06)", // 極淡的水平頂部線條
+                      borderTop: "1px solid rgba(0,0,0,0.06)",
                       paddingTop: "24px",
                     }}
                   >
-                    {/* 微縮精品感英文標籤 */}
                     <div
                       style={{
                         fontSize: "11px",
@@ -200,6 +206,7 @@ export default function BodyCompositionPage() {
                         marginBottom: "16px",
                         fontFamily: sansFont,
                         fontWeight: 300,
+                        lineHeight: "1.8",
                       }}
                     >
                       {topic.id} &nbsp;&middot;&nbsp; {topic.enTitle}
@@ -207,8 +214,8 @@ export default function BodyCompositionPage() {
 
                     <h3
                       style={{
-                        fontFamily: serifFont, // 改用明體
-                        fontSize: "clamp(24px, 3vw, 28px)",
+                        fontFamily: serifFont,
+                        fontSize: isMobile ? "28px" : "clamp(24px, 3vw, 28px)",
                         fontWeight: 400,
                         marginBottom: "20px",
                         lineHeight: "1.4",
@@ -222,8 +229,8 @@ export default function BodyCompositionPage() {
                       style={{
                         fontSize: "14.5px",
                         lineHeight: "2.1",
-                        color: "#666",       // 優雅、呼吸感強的極簡淡灰
-                        fontWeight: 300,     // 思源細黑體
+                        color: "#666",
+                        fontWeight: 300,
                         marginBottom: "32px",
                         letterSpacing: "0.04em",
                       }}
@@ -242,10 +249,9 @@ export default function BodyCompositionPage() {
                         textDecoration: "none",
                         display: "inline-block",
                         fontWeight: 400,
-                        transition: "opacity 0.3s ease",
                       }}
                     >
-                      EXPLORE TOPIC &rarr;
+                      EXPLORE TOPIC →
                     </a>
                   </div>
                 </div>

@@ -80,7 +80,7 @@ export default function Footer() {
           </p>
 
           <p style={contactTextStyle}>Instagram：easehealth</p>
-          <p style={contactTextStyle}>Email：contact@easehealth.com</p>
+          <p style={contactTextStyle}>Email：contact@easehealthtw.com</p>
           <p style={contactTextStyle}>Location：Taiwan</p>
         </div>
       </div>

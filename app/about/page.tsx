@@ -1,9 +1,22 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 
 export default function AboutPage() {
-  // 💡 風格 A：英文與中文大標使用經典襯線明體，內文統一使用思源細黑體（Noto Sans TC）
-  const serifFont = "'Cormorant Garamond', 'Playfair Display', 'Noto Serif TC', Georgia, serif";
-  const sansFont = "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans TC', Helvetica, Arial, sans-serif";
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  const serifFont =
+    "'Cormorant Garamond', 'Playfair Display', 'Noto Serif TC', Georgia, serif";
+  const sansFont =
+    "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans TC', Helvetica, Arial, sans-serif";
 
   const backgrounds = [
     {
@@ -50,31 +63,31 @@ export default function AboutPage() {
     <main
       style={{
         minHeight: "100vh",
-        background: "#f8f6f2", // EASE 經典溫潤米白
+        background: "#f8f6f2",
         color: "#2d2d2d",
-        fontFamily: sansFont,  // 預設內文使用思源細黑體系統
+        fontFamily: sansFont,
         WebkitFontSmoothing: "antialiased",
         MozOsxFontSmoothing: "grayscale",
       }}
     >
       <Navbar />
 
-      {/* Main Intro Section */}
       <section
         style={{
           maxWidth: "1180px",
           margin: "0 auto",
-          padding: "120px 24px 140px",
+          padding: isMobile ? "56px 30px 80px" : "90px 24px 120px",
           display: "flex",
-          gap: "70px",
+          gap: isMobile ? "40px" : "70px",
           alignItems: "center",
-          flexWrap: "wrap",
+          flexDirection: isMobile ? "column" : "row",
         }}
       >
         <div
           style={{
-            flex: "1 1 360px",
-            maxWidth: "440px",
+            flex: isMobile ? "1 1 100%" : "1 1 360px",
+            width: "100%",
+            maxWidth: isMobile ? "420px" : "440px",
             aspectRatio: "4 / 5",
             overflow: "hidden",
             borderRadius: "4px",
@@ -94,13 +107,13 @@ export default function AboutPage() {
           />
         </div>
 
-        <div style={{ flex: "1 1 520px" }}>
+        <div style={{ flex: isMobile ? "1 1 100%" : "1 1 520px", width: "100%" }}>
           <p
             style={{
-              letterSpacing: "0.4em",
+              letterSpacing: "0.35em",
               fontSize: "12px",
               color: "#8a847c",
-              marginBottom: 24,
+              marginBottom: 20,
               fontWeight: 400,
             }}
           >
@@ -109,25 +122,25 @@ export default function AboutPage() {
 
           <h1
             style={{
-              fontFamily: serifFont, // 大標使用明體定調
-              fontSize: "clamp(32px, 4vw, 42px)",
-              lineHeight: 1.45,
-              marginBottom: "32px",
+              fontFamily: serifFont,
+              fontSize: "clamp(36px, 8vw, 48px)",
+              lineHeight: 1.4,
+              marginBottom: "28px",
               fontWeight: 400,
-              letterSpacing: "0.03em",
+              letterSpacing: "0.04em",
             }}
           >
-            讓健康不只是一次活動，
+            健康不只是一次活動
             <br />
-            內化為真正融入工作與生活的習慣。
+            讓它自然地融入工作與生活
           </h1>
 
           <p
             style={{
               fontSize: "15px",
-              color: "#666",       // 換回你最喜歡的優雅淡灰
-              lineHeight: "2.1",   // 高行高釋放視覺壓力
-              fontWeight: 300,     // 放心使用輕盈的 300 細字重
+              color: "#666",
+              lineHeight: "2.1",
+              fontWeight: 300,
               maxWidth: "620px",
               letterSpacing: "0.05em",
             }}
@@ -139,11 +152,10 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Story Section */}
       <section
         style={{
           background: "#ece7df",
-          padding: "120px 24px",
+          padding: isMobile ? "72px 30px" : "96px 24px",
         }}
       >
         <div style={{ maxWidth: "980px", margin: "0 auto" }}>
@@ -152,7 +164,7 @@ export default function AboutPage() {
               fontSize: "11px",
               letterSpacing: "0.3em",
               color: "#8a847c",
-              marginBottom: "24px",
+              marginBottom: "20px",
               textTransform: "uppercase",
             }}
           >
@@ -162,10 +174,10 @@ export default function AboutPage() {
           <h2
             style={{
               fontFamily: serifFont,
-              fontSize: "34px",
+              fontSize: isMobile ? "34px" : "42px",
               fontWeight: 400,
-              lineHeight: 1.4,
-              marginBottom: "36px",
+              lineHeight: 1.35,
+              marginBottom: "32px",
               letterSpacing: "0.03em",
             }}
           >
@@ -176,8 +188,8 @@ export default function AboutPage() {
             style={{
               fontSize: "15px",
               lineHeight: "2.1",
-              color: "#666",       // 優雅淡灰
-              fontWeight: 300,     // 輕盈細字
+              color: "#666",
+              fontWeight: 300,
               maxWidth: "760px",
               letterSpacing: "0.05em",
             }}
@@ -193,15 +205,14 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Background/Four Pillars Section */}
       <section
         style={{
           maxWidth: "1180px",
           margin: "0 auto",
-          padding: "140px 24px",
+          padding: isMobile ? "72px 30px" : "110px 24px",
         }}
       >
-        <div style={{ marginBottom: "72px" }}>
+        <div style={{ marginBottom: isMobile ? "48px" : "64px" }}>
           <p
             style={{
               fontSize: "11px",
@@ -217,9 +228,10 @@ export default function AboutPage() {
           <h2
             style={{
               fontFamily: serifFont,
-              fontSize: "34px",
+              fontSize: isMobile ? "34px" : "42px",
               fontWeight: 400,
               letterSpacing: "0.03em",
+              lineHeight: 1.35,
             }}
           >
             EASE 的專業來自四個領域
@@ -229,8 +241,10 @@ export default function AboutPage() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-            gap: "40px",
+            gridTemplateColumns: isMobile
+              ? "1fr"
+              : "repeat(auto-fit, minmax(240px, 1fr))",
+            gap: isMobile ? "36px" : "40px",
           }}
         >
           {backgrounds.map((item) => (
@@ -238,7 +252,7 @@ export default function AboutPage() {
               key={item.id}
               style={{
                 borderTop: "1px solid rgba(0,0,0,0.08)",
-                paddingTop: "32px",
+                paddingTop: "28px",
               }}
             >
               <p
@@ -255,8 +269,8 @@ export default function AboutPage() {
 
               <h3
                 style={{
-                  fontFamily: serifFont, // 卡片標題明體
-                  fontSize: "20px",
+                  fontFamily: serifFont,
+                  fontSize: "24px",
                   fontWeight: 400,
                   marginBottom: "18px",
                   letterSpacing: "0.02em",
@@ -269,8 +283,8 @@ export default function AboutPage() {
                 style={{
                   fontSize: "14px",
                   lineHeight: "2.1",
-                  color: "#666",       // 優雅淡灰
-                  fontWeight: 300,     // 輕盈細字
+                  color: "#666",
+                  fontWeight: 300,
                   margin: 0,
                   letterSpacing: "0.04em",
                 }}
@@ -282,11 +296,10 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Approach Section */}
       <section
         style={{
           background: "#fff",
-          padding: "140px 24px",
+          padding: isMobile ? "72px 30px" : "110px 24px",
         }}
       >
         <div style={{ maxWidth: "1080px", margin: "0 auto" }}>
@@ -305,10 +318,11 @@ export default function AboutPage() {
           <h2
             style={{
               fontFamily: serifFont,
-              fontSize: "34px",
+              fontSize: isMobile ? "34px" : "42px",
               fontWeight: 400,
-              marginBottom: "64px",
+              marginBottom: isMobile ? "48px" : "64px",
               letterSpacing: "0.03em",
+              lineHeight: 1.35,
             }}
           >
             我們如何協助企業
@@ -317,7 +331,9 @@ export default function AboutPage() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+              gridTemplateColumns: isMobile
+                ? "1fr"
+                : "repeat(auto-fit, minmax(260px, 1fr))",
               gap: "32px",
             }}
           >
@@ -326,7 +342,7 @@ export default function AboutPage() {
                 key={item.step}
                 style={{
                   background: "#f8f6f2",
-                  padding: "40px 36px",
+                  padding: isMobile ? "32px 28px" : "40px 36px",
                   borderRadius: "4px",
                   border: "1px solid rgba(0,0,0,0.03)",
                 }}
@@ -346,7 +362,7 @@ export default function AboutPage() {
                 <h3
                   style={{
                     fontFamily: serifFont,
-                    fontSize: "20px",
+                    fontSize: "24px",
                     fontWeight: 400,
                     marginBottom: "18px",
                     letterSpacing: "0.02em",
@@ -358,9 +374,9 @@ export default function AboutPage() {
                 <p
                   style={{
                     fontSize: "14px",
-                    color: "#666",       // 優雅淡灰
+                    color: "#666",
                     lineHeight: "2.1",
-                    fontWeight: 300,     // 輕盈細字
+                    fontWeight: 300,
                     margin: 0,
                     letterSpacing: "0.04em",
                   }}
@@ -373,10 +389,9 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* CTA Section */}
       <section
         style={{
-          padding: "140px 24px 160px",
+          padding: isMobile ? "80px 24px 96px" : "120px 24px 140px",
           textAlign: "center",
           background: "#f8f6f2",
         }}
@@ -384,10 +399,11 @@ export default function AboutPage() {
         <h2
           style={{
             fontFamily: serifFont,
-            fontSize: "32px",
+            fontSize: isMobile ? "34px" : "42px",
             fontWeight: 400,
             marginBottom: "24px",
             letterSpacing: "0.03em",
+            lineHeight: 1.35,
           }}
         >
           正在規劃企業健康活動？
@@ -396,10 +412,10 @@ export default function AboutPage() {
         <p
           style={{
             fontSize: "15px",
-            color: "#666",       // 優雅淡灰
+            color: "#666",
             lineHeight: "2.1",
             marginBottom: "44px",
-            fontWeight: 300,     // 輕盈細字
+            fontWeight: 300,
             letterSpacing: "0.05em",
           }}
         >
@@ -419,10 +435,9 @@ export default function AboutPage() {
             fontSize: "12px",
             letterSpacing: "0.25em",
             borderRadius: "4px",
-            transition: "all 0.3s ease",
           }}
         >
-          聯絡我們 &rarr;
+          聯絡我們 →
         </a>
       </section>
     </main>

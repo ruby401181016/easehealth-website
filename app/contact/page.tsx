@@ -1,43 +1,106 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
+
+const programTopics = {
+  nutrition: {
+    label: "飲食體態 Nutrition",
+    topics: [
+      "久坐族救星：國手教你無痛減脂",
+      "燃燒脂肪關鍵策略：外食族也適用",
+      "增肌減脂一次搞懂：零基礎也能做",
+      "為什麼瘦了又復胖？體態維持的關鍵機制",
+    ],
+  },
+  healthData: {
+    label: "健康數據管理 Health Data",
+    topics: [
+      "上班族必懂健檢數據",
+      "代謝症候群與慢性疲勞",
+      "內分泌失衡與體態變化",
+      "久坐族健康管理",
+    ],
+  },
+  movement: {
+    label: "運動實作 Movement",
+    topics: [
+      "上班族增肌入門：建立力量與代謝基礎",
+      "不去健身房也能練：居家／辦公室肌力訓練",
+      "練對比練多更重要：動作品質與訓練效率",
+      "打造不容易受傷的身體：上班族功能性訓練",
+    ],
+  },
+  recovery: {
+    label: "疼痛修復 Recovery",
+    topics: ["久坐肩頸腰痛修復", "身體失衡修復", "滑鼠手與腕痛改善", "活動能力重建"],
+  },
+  lifestyle: {
+    label: "習慣養成 Lifestyle",
+    topics: [
+      "從三分鐘開始：讓運動融入生活",
+      "明明知道卻做不到？破解健康行動卡關點",
+      "環境正在影響你：打造健康的生活空間",
+      "找到適合你的運動方式",
+    ],
+  },
+  workshops: {
+    label: "健康工作坊 Workshops",
+    topics: ["MOVE LAB", "人體使用說明書", "Office Athlete", "BODY RESET"],
+  },
+  custom: {
+    label: "其他 Other",
+    topics: ["尚未確定，想先討論"],
+  },
+};
+
+type ProgramKey = keyof typeof programTopics;
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
+  const [selectedProgram, setSelectedProgram] = useState("");
+  const [selectedTopic, setSelectedTopic] = useState("");
+  const [isMobile, setIsMobile] = useState(false);
 
-  // 💡 同步風格 A 的高級感字體系統
-  const serifFont = "'Cormorant Garamond', 'Playfair Display', 'Noto Serif TC', Georgia, serif";
-  const sansFont = "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans TC', Helvetica, Arial, sans-serif";
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
-  const inputStyle = {
+  const serifFont =
+    "'Cormorant Garamond', 'Playfair Display', 'Noto Serif TC', Georgia, serif";
+  const sansFont =
+    "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans TC', Helvetica, Arial, sans-serif";
+
+  const inputStyle: React.CSSProperties = {
     width: "100%",
     border: "none",
     borderBottom: "1px solid rgba(0,0,0,0.12)",
     background: "transparent",
-    padding: "14px 0", // 稍微拉大輸入框上下內襯
-    fontSize: "14.5px", // 精緻微縮字級
+    padding: "14px 0",
+    fontSize: "14.5px",
     color: "#2d2d2d",
     outline: "none",
-    fontFamily: sansFont, // 確保輸入文字為思源黑體
+    fontFamily: sansFont,
     fontWeight: 300,
-    transition: "border-color 0.3s ease",
   };
 
-  const labelStyle = {
+  const labelStyle: React.CSSProperties = {
     fontFamily: sansFont,
     fontSize: "11px",
-    letterSpacing: "0.25em", // 加寬英文字標
-    color: "#8a847c", // 暖調霧灰
-    textTransform: "uppercase" as const,
+    letterSpacing: "0.25em",
+    color: "#8a847c",
+    textTransform: "uppercase",
     marginBottom: "6px",
     fontWeight: 400,
   };
 
-  const contactTextStyle = {
+  const contactTextStyle: React.CSSProperties = {
     fontFamily: sansFont,
-    color: "#b8b3ac", 
-    fontSize: "13.5px", 
+    color: "#b8b3ac",
+    fontSize: "13.5px",
     lineHeight: "2.0",
     fontWeight: 300,
     marginBottom: "10px",
@@ -53,7 +116,7 @@ export default function ContactPage() {
     <main
       style={{
         minHeight: "100vh",
-        background: "#f8f6f2", // EASE 經典米白
+        background: "#f8f6f2",
         color: "#2d2d2d",
         fontFamily: sansFont,
         WebkitFontSmoothing: "antialiased",
@@ -61,11 +124,10 @@ export default function ContactPage() {
     >
       <Navbar />
 
-      {/* Header Banner */}
       <section
         style={{
-          background: "#ece7df", // 沉穩沙色
-          padding: "80px 24px 70px", // 🚀 統一收緊上下留白
+          background: "#ece7df",
+          padding: isMobile ? "56px 24px 48px" : "80px 24px 70px",
           textAlign: "center",
         }}
       >
@@ -83,125 +145,53 @@ export default function ContactPage() {
 
         <h1
           style={{
-            fontFamily: serifFont, // 換上優雅明體
+            fontFamily: serifFont,
             fontSize: "clamp(34px, 5vw, 44px)",
             marginBottom: 24,
             fontWeight: 400,
             letterSpacing: "0.04em",
           }}
         >
-          企業合作洽詢
+          合作洽詢
         </h1>
 
         <p
           style={{
             fontSize: "15px",
-            color: "#5a5550", // 空氣感深暖灰
+            color: "#5a5550",
             maxWidth: "720px",
             margin: "0 auto",
-            lineHeight: "2.1", // 釋放行高壓力
+            lineHeight: "2.1",
             fontWeight: 300,
             letterSpacing: "0.04em",
           }}
         >
-          健康講座 ｜ 健康工作坊 ｜ 運動實作 ｜ 企業 Wellness 活動
+          健康講座 ｜ 健康工作坊 ｜ 運動實作
           <br />
-          歡迎留下您的需求，我們將與您聯繫討論最適合的合作方式。
+          留下您的合作需求，我們將與您聯繫
         </p>
       </section>
 
-      {/* Main Content Form Section */}
       <section
         style={{
           maxWidth: "1180px",
           margin: "0 auto",
-          padding: "70px 24px 140px", // 🚀 頂部對齊優化
+          padding: isMobile ? "36px 20px 90px" : "70px 24px 120px",
           display: "flex",
-          gap: "80px",
+          gap: isMobile ? "48px" : "80px",
           alignItems: "flex-start",
           flexWrap: "wrap",
         }}
       >
-        {/* Left Side Info */}
-        <div style={{ flex: "1 1 380px" }}>
-          <p
-            style={{
-              fontSize: "11px",
-              letterSpacing: "0.3em",
-              color: "#8a847c",
-              marginBottom: "16px",
-              textTransform: "uppercase",
-              fontWeight: 400,
-            }}
-          >
-            Work With EASE
-          </p>
-
-          <h2
-            style={{
-              fontFamily: serifFont, // 換上優雅明體
-              fontSize: "32px",
-              lineHeight: 1.4,
-              fontWeight: 400,
-              marginBottom: "28px",
-              letterSpacing: "0.03em",
-            }}
-          >
-            打造更容易參與的
-            <br />
-            企業健康體驗
-          </h2>
-
-          <p
-            style={{
-              fontSize: "14.5px",
-              lineHeight: "2.1",
-              color: "#666",
-              fontWeight: 300,
-              marginBottom: "44px",
-              letterSpacing: "0.04em",
-            }}
-          >
-            EASE 提供企業健康講座、運動實作課程、疼痛修復主題與互動式健康工作坊。
-            <br />
-            <br />
-            依照企業規模、活動目標與員工需求，規劃最適合的健康促進方案。
-          </p>
-
-          <div
-            style={{
-              borderTop: "1px solid rgba(0,0,0,0.06)",
-              paddingTop: "28px",
-            }}
-          >
-            <p
-              style={{
-                color: "#7e7871",
-                lineHeight: "2.0",
-                fontSize: "14px",
-                fontWeight: 300,
-                letterSpacing: "0.02em",
-              }}
-            >
-              Email：ruby401181016@gmail.com
-              <br />
-              Location：Taiwan
-            </p>
-          </div>
-        </div>
-
-        {/* Right Side Form Card */}
         <div
           style={{
-            flex: "1 1 540px",
+            flex: isMobile ? "1 1 100%" : "1 1 540px",
+            order: isMobile ? 1 : 2,
             background: "#fff",
-            padding: "52px 48px",
-            borderRadius: "4px", // 精品微圓角
-            boxShadow: "0 20px 50px rgba(45,45,45,0.025)", // 更隱約優雅的陰影
+            padding: isMobile ? "36px 24px" : "52px 48px",
+            borderRadius: "4px",
+            boxShadow: "0 20px 50px rgba(45,45,45,0.025)",
             minHeight: "400px",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
           }}
         >
           {!submitted ? (
@@ -210,73 +200,48 @@ export default function ContactPage() {
                 <div
                   style={{
                     display: "grid",
-                    gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+                    gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)",
                     gap: "36px",
                   }}
                 >
                   <div>
                     <p style={labelStyle}>Name *</p>
-                    <input
-                      required
-                      name="name"
-                      placeholder="您的姓名"
-                      style={inputStyle}
-                    />
+                    <input required name="name" placeholder="您的姓名" style={inputStyle} />
                   </div>
 
                   <div>
                     <p style={labelStyle}>Company *</p>
-                    <input
-                      required
-                      name="company"
-                      placeholder="公司 / 單位名稱"
-                      style={inputStyle}
-                    />
+                    <input required name="company" placeholder="公司 / 單位名稱" style={inputStyle} />
                   </div>
                 </div>
 
                 <div
                   style={{
                     display: "grid",
-                    gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+                    gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)",
                     gap: "36px",
                   }}
                 >
                   <div>
                     <p style={labelStyle}>Position</p>
-                    <input
-                      name="position"
-                      placeholder="職稱"
-                      style={inputStyle}
-                    />
+                    <input name="position" placeholder="職稱" style={inputStyle} />
                   </div>
 
                   <div>
                     <p style={labelStyle}>Phone *</p>
-                    <input
-                      required
-                      name="phone"
-                      placeholder="聯絡電話"
-                      style={inputStyle}
-                    />
+                    <input required name="phone" placeholder="聯絡電話" style={inputStyle} />
                   </div>
                 </div>
 
                 <div>
                   <p style={labelStyle}>Email *</p>
-                  <input
-                    required
-                    type="email"
-                    name="email"
-                    placeholder="Email 地址"
-                    style={inputStyle}
-                  />
+                  <input required type="email" name="email" placeholder="Email 地址" style={inputStyle} />
                 </div>
 
                 <div
                   style={{
                     display: "grid",
-                    gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+                    gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)",
                     gap: "36px",
                   }}
                 >
@@ -285,46 +250,56 @@ export default function ContactPage() {
                     <select
                       required
                       name="program"
-                      defaultValue=""
+                      value={selectedProgram}
+                      onChange={(e) => {
+                        setSelectedProgram(e.target.value);
+                        setSelectedTopic("");
+                      }}
                       style={{ ...inputStyle, cursor: "pointer" }}
                     >
-                      <option value="" disabled>請選擇合作需求</option>
-                      <option value="飲食體態">飲食體態 Nutrition</option>
-                      <option value="健康數據">健康數據 Health Data</option>
-                      <option value="運動實作">運動實作 Movement</option>
-                      <option value="疼痛修復">疼痛修復 Recovery</option>
-                      <option value="習慣養成">習慣養成 Lifestyle</option>
-                      <option value="健康工作坊">健康工作坊 Workshops</option>
-                      <option value="企業 Wellness 活動">企業 Wellness 活動</option>
-                      <option value="其他">其他</option>
+                      <option value="" disabled>
+                        請選擇合作需求
+                      </option>
+
+                      {Object.entries(programTopics).map(([key, program]) => (
+                        <option key={key} value={key}>
+                          {program.label}
+                        </option>
+                      ))}
                     </select>
                   </div>
 
                   <div>
-                    <p style={labelStyle}>Format</p>
+                    <p style={labelStyle}>Topic *</p>
                     <select
-                      name="format"
-                      defaultValue=""
-                      style={{ ...inputStyle, cursor: "pointer" }}
+                      required
+                      name="topic"
+                      value={selectedTopic}
+                      disabled={!selectedProgram}
+                      onChange={(e) => setSelectedTopic(e.target.value)}
+                      style={{
+                        ...inputStyle,
+                        cursor: selectedProgram ? "pointer" : "not-allowed",
+                        color: selectedProgram ? "#2d2d2d" : "#aaa",
+                      }}
                     >
-                      <option value="" disabled>請選擇活動形式</option>
-                      <option value="企業講座">企業講座</option>
-                      <option value="運動實作課程">運動實作課程</option>
-                      <option value="互動工作坊">互動工作坊</option>
-                      <option value="健康月活動">健康月活動</option>
-                      <option value="年度健康促進規劃">年度健康促進規劃</option>
-                      <option value="尚未確定">尚未確定，想先討論</option>
+                      <option value="" disabled>
+                        {selectedProgram ? "請選擇課程內容" : "請先選擇合作需求"}
+                      </option>
+
+                      {selectedProgram &&
+                        programTopics[selectedProgram as ProgramKey].topics.map((topic) => (
+                          <option key={topic} value={topic}>
+                            {topic}
+                          </option>
+                        ))}
                     </select>
                   </div>
                 </div>
 
                 <div>
                   <p style={labelStyle}>Participants</p>
-                  <input
-                    name="participants"
-                    placeholder="預估參與人數，例如：50人"
-                    style={inputStyle}
-                  />
+                  <input name="participants" placeholder="預估參與人數，例如：50人" style={inputStyle} />
                 </div>
 
                 <div>
@@ -352,45 +327,23 @@ export default function ContactPage() {
                     background: "#2d2d2d",
                     color: "#f8f6f2",
                     fontSize: "12px",
-                    letterSpacing: "0.25em", // 提高按鈕質感
+                    letterSpacing: "0.25em",
                     cursor: "pointer",
-                    borderRadius: "4px", // 微圓角
-                    transition: "opacity 0.3s ease",
+                    borderRadius: "4px",
                   }}
-                  onMouseOver={(e) => (e.currentTarget.style.opacity = "0.85")}
-                  onMouseOut={(e) => (e.currentTarget.style.opacity = "1")}
                 >
-                  送出合作需求 &rarr;
+                  送出合作需求 →
                 </button>
               </div>
             </form>
           ) : (
-            /* 送出表單成功畫面 */
             <div style={{ textAlign: "center", padding: "40px 20px" }}>
-              <div
-                style={{
-                  width: "44px",
-                  height: "44px",
-                  borderRadius: "50%",
-                  background: "#ece7df",
-                  margin: "0 auto 24px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: "16px",
-                  color: "#2d2d2d",
-                }}
-              >
-                ✓
-              </div>
-
               <h3
                 style={{
-                  fontFamily: serifFont, // 換上優雅明體
+                  fontFamily: serifFont,
                   fontSize: "26px",
                   fontWeight: 400,
                   marginBottom: "16px",
-                  letterSpacing: "0.03em",
                 }}
               >
                 Thank You
@@ -402,44 +355,72 @@ export default function ContactPage() {
                   color: "#666",
                   lineHeight: "2.0",
                   fontWeight: 300,
-                  maxWidth: "340px",
-                  margin: "0 auto 36px",
-                  letterSpacing: "0.03em",
                 }}
               >
-                合作需求已成功送出。我們非常期待與您討論企業健康講座、工作坊或活動規劃。
-                EASE 團隊將於 1-2 個工作天內與您聯繫。
+                合作需求已成功送出。EASE 團隊將於 1-2 個工作天內與您聯繫。
               </p>
-
-              <button
-                onClick={() => setSubmitted(false)}
-                style={{
-                  background: "transparent",
-                  border: "none",
-                  borderBottom: "1px solid #2d2d2d",
-                  paddingBottom: "4px",
-                  fontSize: "12px",
-                  letterSpacing: "0.15em",
-                  color: "#2d2d2d",
-                  cursor: "pointer",
-                  fontFamily: sansFont,
-                }}
-              >
-                返回表單修改
-              </button>
             </div>
           )}
         </div>
+
+        <div
+          style={{
+            flex: isMobile ? "1 1 100%" : "1 1 380px",
+            order: isMobile ? 2 : 1,
+          }}
+        >
+          <p
+            style={{
+              fontSize: "11px",
+              letterSpacing: "0.3em",
+              color: "#8a847c",
+              marginBottom: "16px",
+              textTransform: "uppercase",
+              fontWeight: 400,
+            }}
+          >
+            Work With EASE
+          </p>
+
+          <h2
+            style={{
+              fontFamily: serifFont,
+              fontSize: isMobile ? "30px" : "32px",
+              lineHeight: 1.4,
+              fontWeight: 400,
+              marginBottom: "28px",
+              letterSpacing: "0.03em",
+            }}
+          >
+            打造真正融入
+            <br />
+            生活與工作的健康體驗
+          </h2>
+
+          <p
+            style={{
+              fontSize: "14.5px",
+              lineHeight: "2.1",
+              color: "#666",
+              fontWeight: 300,
+              marginBottom: 0,
+              letterSpacing: "0.04em",
+            }}
+          >
+            EASE 提供企業健康講座、運動實作課程、疼痛修復主題與互動式健康工作坊。
+            <br />
+            <br />
+            依照企業規模、活動目標與員工需求，規劃最適合的方案。
+          </p>
+        </div>
       </section>
 
-      {/* Footer Section 🚀 已同步高訂不對稱深灰系統 */}
       <footer
         style={{
           background: "#2d2d2d",
           color: "#f8f6f2",
           padding: "100px 24px 48px",
           fontFamily: sansFont,
-          WebkitFontSmoothing: "antialiased",
         }}
       >
         <div
@@ -451,7 +432,7 @@ export default function ContactPage() {
             gap: "64px",
           }}
         >
-          <div style={{ maxWidth: "420px" }}>
+          <div>
             <h2
               style={{
                 fontFamily: serifFont,
@@ -463,14 +444,13 @@ export default function ContactPage() {
             >
               EASE
             </h2>
+
             <p
               style={{
-                fontFamily: sansFont,
                 color: "#a19b93",
                 lineHeight: "2.0",
                 fontSize: "14px",
                 fontWeight: 300,
-                letterSpacing: "0.05em",
               }}
             >
               Corporate Wellness Studio
@@ -482,18 +462,17 @@ export default function ContactPage() {
           <div>
             <p
               style={{
-                fontFamily: sansFont,
                 letterSpacing: "0.3em",
                 fontSize: "11px",
                 color: "#7e7871",
                 marginBottom: 24,
-                fontWeight: 400,
               }}
             >
               CONTACT
             </p>
+
             <p style={contactTextStyle}>Instagram：easehealth</p>
-            <p style={contactTextStyle}>Email：contact@easehealth.com</p>
+            <p style={contactTextStyle}>Email：contact@easehealthtw.com</p>
             <p style={contactTextStyle}>Location：Taiwan</p>
           </div>
         </div>
@@ -507,7 +486,6 @@ export default function ContactPage() {
             color: "#7e7871",
             fontSize: "12px",
             letterSpacing: "0.06em",
-            fontFamily: sansFont,
             fontWeight: 300,
           }}
         >

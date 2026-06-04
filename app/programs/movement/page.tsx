@@ -1,10 +1,24 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 export default function MovementPage() {
-  // 💡 同步風格 A 的高級感字體系統
-  const serifFont = "'Cormorant Garamond', 'Playfair Display', 'Noto Serif TC', Georgia, serif";
-  const sansFont = "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans TC', Helvetica, Arial, sans-serif";
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  const serifFont =
+    "'Cormorant Garamond', 'Playfair Display', 'Noto Serif TC', Georgia, serif";
+
+  const sansFont =
+    "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans TC', Helvetica, Arial, sans-serif";
 
   const topicsData = [
     {
@@ -41,22 +55,11 @@ export default function MovementPage() {
     },
   ];
 
-  // 同步高訂霧灰白 Footer 的聯絡文字樣式
-  const contactTextStyle = {
-    fontFamily: sansFont,
-    color: "#b8b3ac", 
-    fontSize: "13.5px", 
-    lineHeight: "2.0",
-    fontWeight: 300,
-    marginBottom: "10px",
-    letterSpacing: "0.04em",
-  };
-
   return (
     <main
       style={{
         minHeight: "100vh",
-        background: "#f8f6f2", // EASE 經典米白
+        background: "#f8f6f2",
         color: "#2d2d2d",
         fontFamily: sansFont,
         WebkitFontSmoothing: "antialiased",
@@ -64,20 +67,19 @@ export default function MovementPage() {
     >
       <Navbar />
 
-      {/* Hero Section */}
       <section
         style={{
-          padding: "80px 24px 70px", // 🚀 已修正：完美收緊上下留白
+          padding: isMobile ? "56px 24px 48px" : "80px 24px 70px",
           textAlign: "center",
-          background: "#ece7df",     // 沉穩沙色
+          background: "#ece7df",
         }}
       >
         <p
           style={{
-            letterSpacing: "0.35em",   // 精品感字距
+            letterSpacing: "0.35em",
             fontSize: "12px",
             color: "#8a847c",
-            marginBottom: 22,
+            marginBottom: 20,
             fontWeight: 400,
           }}
         >
@@ -86,8 +88,8 @@ export default function MovementPage() {
 
         <h1
           style={{
-            fontFamily: serifFont,     // 換上優雅明體
-            fontSize: "clamp(36px, 5vw, 46px)",
+            fontFamily: serifFont,
+            fontSize: "clamp(42px, 8vw, 56px)",
             marginBottom: 24,
             fontWeight: 400,
             letterSpacing: "0.04em",
@@ -100,7 +102,7 @@ export default function MovementPage() {
           style={{
             fontSize: "15px",
             color: "#5a5550",
-            maxWidth: "600px",
+            maxWidth: "620px",
             margin: "0 auto",
             lineHeight: "2.1",
             fontWeight: 300,
@@ -108,21 +110,19 @@ export default function MovementPage() {
           }}
         >
           從基礎肌力、動作品質到功能性訓練，
-          <br />
+          <br style={{ display: isMobile ? "none" : "block" }} />
           協助員工建立真正能融入生活的運動能力。
         </p>
       </section>
 
-      {/* Topics Section */}
       <section
         style={{
           maxWidth: "1180px",
           margin: "0 auto",
-          padding: "70px 24px 120px", // 🚀 已修正：縮小頂部留白，順暢銜接
+          padding: isMobile ? "40px 30px 90px" : "70px 24px 120px",
         }}
       >
-        {/* Section Header */}
-        <div style={{ marginBottom: "64px" }}>
+        <div style={{ marginBottom: isMobile ? "48px" : "64px" }}>
           <p
             style={{
               fontSize: "11px",
@@ -137,8 +137,8 @@ export default function MovementPage() {
 
           <h2
             style={{
-              fontFamily: serifFont, // 優雅明體
-              fontSize: "34px",
+              fontFamily: serifFont,
+              fontSize: isMobile ? "32px" : "34px",
               fontWeight: 400,
               letterSpacing: "0.03em",
             }}
@@ -147,12 +147,11 @@ export default function MovementPage() {
           </h2>
         </div>
 
-        {/* Dynamic 交錯列表 */}
         <div
           style={{
             display: "flex",
             flexDirection: "column",
-            gap: "140px", // 保持極簡大氣的呼吸感間距
+            gap: isMobile ? "72px" : "140px",
           }}
         >
           {topicsData.map((topic, index) => {
@@ -163,20 +162,24 @@ export default function MovementPage() {
                 key={topic.id}
                 style={{
                   display: "flex",
-                  flexDirection: isEven ? "row-reverse" : "row",
+                  flexDirection: isMobile ? "column" : isEven ? "row-reverse" : "row",
                   alignItems: "center",
-                  gap: "80px",
+                  gap: isMobile ? "28px" : "80px",
                   flexWrap: "wrap",
                 }}
               >
-                {/* Image Box */}
-                <div style={{ flex: "1 1 400px" }}>
+                <div
+                  style={{
+                    flex: isMobile ? "1 1 100%" : "1 1 400px",
+                    width: "100%",
+                  }}
+                >
                   <div
                     style={{
                       width: "100%",
-                      aspectRatio: "16 / 10", // 黃金感電影比例 8:5
+                      aspectRatio: "16 / 10",
                       overflow: "hidden",
-                      borderRadius: "4px",   // 精品微圓角
+                      borderRadius: "4px",
                       background: "#ece7df",
                       boxShadow: "0 20px 40px rgba(0,0,0,0.015)",
                     }}
@@ -194,15 +197,18 @@ export default function MovementPage() {
                   </div>
                 </div>
 
-                {/* Text Content Box */}
-                <div style={{ flex: "1 1 400px" }}>
+                <div
+                  style={{
+                    flex: isMobile ? "1 1 100%" : "1 1 400px",
+                    width: "100%",
+                  }}
+                >
                   <div
                     style={{
-                      borderTop: "1px solid rgba(0,0,0,0.06)", // 低噪水平界線
+                      borderTop: "1px solid rgba(0,0,0,0.06)",
                       paddingTop: "24px",
                     }}
                   >
-                    {/* 精緻微縮的英文字標 */}
                     <div
                       style={{
                         fontSize: "11px",
@@ -211,6 +217,7 @@ export default function MovementPage() {
                         marginBottom: "16px",
                         fontFamily: sansFont,
                         fontWeight: 300,
+                        lineHeight: "1.8",
                       }}
                     >
                       {topic.id} &nbsp;&middot;&nbsp; {topic.enTitle}
@@ -218,8 +225,8 @@ export default function MovementPage() {
 
                     <h3
                       style={{
-                        fontFamily: serifFont, // 換上優雅明體
-                        fontSize: "clamp(24px, 3vw, 28px)",
+                        fontFamily: serifFont,
+                        fontSize: isMobile ? "28px" : "clamp(24px, 3vw, 28px)",
                         fontWeight: 400,
                         marginBottom: "20px",
                         lineHeight: "1.4",
@@ -233,8 +240,8 @@ export default function MovementPage() {
                       style={{
                         fontSize: "14.5px",
                         lineHeight: "2.1",
-                        color: "#666",       // 質感空氣感淡灰
-                        fontWeight: 300,     // 搭配思源細黑體
+                        color: "#666",
+                        fontWeight: 300,
                         marginBottom: "32px",
                         letterSpacing: "0.04em",
                       }}
@@ -253,10 +260,9 @@ export default function MovementPage() {
                         textDecoration: "none",
                         display: "inline-block",
                         fontWeight: 400,
-                        transition: "opacity 0.3s ease",
                       }}
                     >
-                      EXPLORE TOPIC &rarr;
+                      EXPLORE TOPIC →
                     </a>
                   </div>
                 </div>
@@ -266,93 +272,7 @@ export default function MovementPage() {
         </div>
       </section>
 
-      {/* Footer 🚀 已同步更新為全站一致的高級感不對稱深灰 Footer */}
-      <footer
-        style={{
-          background: "#2d2d2d",
-          color: "#f8f6f2",
-          padding: "100px 24px 48px",
-          fontFamily: sansFont,
-          WebkitFontSmoothing: "antialiased",
-        }}
-      >
-        <div
-          style={{
-            maxWidth: "1180px",
-            margin: "0 auto",
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-            gap: "64px",
-          }}
-        >
-          {/* 左側品牌 */}
-          <div style={{ maxWidth: "420px" }}>
-            <h2
-              style={{
-                fontFamily: serifFont,
-                fontSize: "30px",
-                letterSpacing: "0.06em",
-                marginBottom: 20,
-                fontWeight: 400,
-              }}
-            >
-              EASE
-            </h2>
-
-            <p
-              style={{
-                fontFamily: sansFont,
-                color: "#a19b93",
-                lineHeight: "2.0",
-                fontSize: "14px",
-                fontWeight: 300,
-                letterSpacing: "0.05em",
-              }}
-            >
-              Corporate Wellness Studio
-              <br />
-              讓健康更容易開始，也更容易持續
-            </p>
-          </div>
-
-          {/* 右側聯絡資訊 */}
-          <div>
-            <p
-              style={{
-                fontFamily: sansFont,
-                letterSpacing: "0.3em",
-                fontSize: "11px",
-                color: "#7e7871",
-                marginBottom: 24,
-                fontWeight: 400,
-              }}
-            >
-              CONTACT
-            </p>
-
-            <p style={contactTextStyle}>Instagram：easehealth</p>
-            <p style={contactTextStyle}>Email：contact@easehealth.com</p>
-            <p style={contactTextStyle}>Location：Taiwan</p>
-          </div>
-        </div>
-
-        {/* 版權宣告 */}
-        <div
-          style={{
-            maxWidth: "1180px",
-            margin: "80px auto 0",
-            borderTop: "1px solid rgba(255,255,255,0.06)",
-            paddingTop: 32,
-            color: "#7e7871",
-            fontSize: "12px",
-            letterSpacing: "0.06em",
-            fontFamily: sansFont,
-            fontWeight: 300,
-          }}
-        >
-          © 2026 EASE WELLNESS. All rights reserved.
-        </div>
-      </footer>
+      <Footer />
     </main>
   );
 }

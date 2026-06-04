@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -53,30 +56,96 @@ const programCategories = [
 ];
 
 export default function ProgramsPage() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  const serifFont =
+    "'Cormorant Garamond', 'Playfair Display', 'Noto Serif TC', Georgia, serif";
+
+  const sansFont =
+    "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans TC', Helvetica, Arial, sans-serif";
+
   return (
-    <main style={{ minHeight: "100vh", background: "#f8f6f2", color: "#2d2d2d" }}>
+    <main
+      style={{
+        minHeight: "100vh",
+        background: "#f8f6f2",
+        color: "#2d2d2d",
+        fontFamily: sansFont,
+        WebkitFontSmoothing: "antialiased",
+      }}
+    >
       <Navbar />
 
-      <section style={{ textAlign: "center", padding: "90px 24px", background: "#ece7df" }}>
-        <p style={{ letterSpacing: "0.35em", color: "#777", marginBottom: 18 }}>
+      <section
+        style={{
+          textAlign: "center",
+          padding: isMobile ? "56px 24px 48px" : "80px 24px 70px",
+          background: "#ece7df",
+        }}
+      >
+        <p
+          style={{
+            letterSpacing: "0.35em",
+            fontSize: "12px",
+            color: "#8a847c",
+            marginBottom: 20,
+            textTransform: "uppercase",
+            fontWeight: 400,
+          }}
+        >
           PROGRAMS
         </p>
 
-        <h1 style={{ fontSize: 52, marginBottom: 20 }}>
+        <h1
+          style={{
+            fontFamily: serifFont,
+            fontSize: "clamp(42px, 8vw, 56px)",
+            marginBottom: 24,
+            fontWeight: 400,
+            letterSpacing: "0.04em",
+          }}
+        >
           課程主題分類
         </h1>
 
-        <p style={{ fontSize: 20, color: "#666" }}>
-          專業健康講座 × 互動實作體驗，幫助企業提升員工健康力
+        <p
+          style={{
+            fontSize: "15px",
+            color: "#5a5550",
+            maxWidth: "680px",
+            margin: "0 auto",
+            lineHeight: "2.1",
+            fontWeight: 300,
+            letterSpacing: "0.04em",
+          }}
+        >
+          專業健康講座 × 互動實作體驗，
+          <br style={{ display: isMobile ? "none" : "block" }} />
+          幫助企業提升員工健康力。
         </p>
       </section>
 
-      <section style={{ maxWidth: 1200, margin: "0 auto", padding: "72px 24px" }}>
+      <section
+        style={{
+          maxWidth: 1180,
+          margin: "0 auto",
+          padding: isMobile ? "40px 30px 90px" : "70px 24px 120px",
+        }}
+      >
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-            gap: 28,
+            gridTemplateColumns: isMobile
+              ? "1fr"
+              : "repeat(auto-fit, minmax(320px, 1fr))",
+            gap: isMobile ? "28px" : "36px",
           }}
         >
           {programCategories.map((program) => (
@@ -85,64 +154,141 @@ export default function ProgramsPage() {
               href={program.href}
               style={{
                 background: "#fff",
-                borderRadius: 28,
-                padding: 32,
+                borderRadius: "4px",
+                padding: isMobile ? "32px 28px" : "40px 38px",
                 textDecoration: "none",
                 color: "#2d2d2d",
-                boxShadow: "0 8px 24px rgba(0,0,0,0.06)",
+                boxShadow: "0 20px 50px rgba(45,45,45,0.025)",
                 display: "block",
+                border: "1px solid rgba(0,0,0,0.035)",
               }}
             >
-              <div
+              <p
                 style={{
-                  width: 48,
-                  height: 48,
-                  borderRadius: "50%",
-                  background: "#dcefeb",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontWeight: 700,
-                  marginBottom: 24,
-                  color: "#3b7c7c",
+                  fontFamily: serifFont,
+                  fontSize: "28px",
+                  color: "#c8bfb4",
+                  marginBottom: "28px",
+                  fontWeight: 400,
+                  letterSpacing: "0.04em",
                 }}
               >
                 {program.number}
-              </div>
+              </p>
 
-              <p style={{ color: "#6f9999", marginBottom: 8 }}>
+              <p
+                style={{
+                  color: "#8a847c",
+                  marginBottom: "12px",
+                  fontSize: "11px",
+                  letterSpacing: "0.24em",
+                  textTransform: "uppercase",
+                  fontWeight: 400,
+                }}
+              >
                 {program.subtitle}
               </p>
 
-              <h2 style={{ fontSize: 28, marginBottom: 16 }}>
+              <h2
+                style={{
+                  fontFamily: serifFont,
+                  fontSize: isMobile ? "28px" : "30px",
+                  lineHeight: 1.35,
+                  marginBottom: "18px",
+                  fontWeight: 400,
+                  letterSpacing: "0.02em",
+                }}
+              >
                 {program.title}
               </h2>
 
-              <p style={{ color: "#666", lineHeight: 1.8, marginBottom: 20 }}>
+              <p
+                style={{
+                  color: "#666",
+                  lineHeight: "1.9",
+                  marginBottom: "28px",
+                  fontSize: "14.5px",
+                  fontWeight: 300,
+                  letterSpacing: "0.03em",
+                }}
+              >
                 {program.description}
               </p>
 
-              <ul style={{ color: "#555", lineHeight: 2, paddingLeft: 20 }}>
+              <ul
+                style={{
+                  color: "#5f5a55",
+                  lineHeight: "2.0",
+                  paddingLeft: "18px",
+                  marginBottom: "30px",
+                  fontSize: "14px",
+                  fontWeight: 300,
+                  letterSpacing: "0.03em",
+                }}
+              >
                 {program.items.map((item) => (
                   <li key={item}>{item}</li>
                 ))}
               </ul>
 
-              <p style={{ marginTop: 24, borderBottom: "1px solid #2d2d2d", display: "inline-block" }}>
+              <span
+                style={{
+                  fontSize: "12px",
+                  letterSpacing: "0.22em",
+                  borderBottom: "1px solid #2d2d2d",
+                  paddingBottom: "4px",
+                  display: "inline-block",
+                }}
+              >
                 查看課程 →
-              </p>
+              </span>
             </a>
           ))}
         </div>
       </section>
 
-      <section style={{ padding: "100px 24px", textAlign: "center", background: "#fff" }}>
-        <h2 style={{ fontSize: 34, marginBottom: 20 }}>
+      <section
+        style={{
+          padding: isMobile ? "72px 24px" : "96px 24px",
+          textAlign: "center",
+          background: "#fff",
+        }}
+      >
+        <p
+          style={{
+            letterSpacing: "0.3em",
+            fontSize: "11px",
+            color: "#8a847c",
+            marginBottom: 20,
+            textTransform: "uppercase",
+          }}
+        >
+          WORK WITH EASE
+        </p>
+
+        <h2
+          style={{
+            fontFamily: serifFont,
+            fontSize: isMobile ? "34px" : "42px",
+            marginBottom: 22,
+            fontWeight: 400,
+            letterSpacing: "0.03em",
+          }}
+        >
           不確定適合哪一種課程？
         </h2>
 
-        <p style={{ fontSize: 16, color: "#666", lineHeight: 2, marginBottom: 34 }}>
-          歡迎與 EASE 討論企業需求，  
+        <p
+          style={{
+            fontSize: "15px",
+            color: "#666",
+            lineHeight: "2.0",
+            marginBottom: 36,
+            fontWeight: 300,
+            letterSpacing: "0.04em",
+          }}
+        >
+          歡迎與 EASE 討論企業需求，
           <br />
           我們可以依照員工特性與活動目標，規劃最適合的健康方案。
         </p>
@@ -153,11 +299,11 @@ export default function ProgramsPage() {
             display: "inline-block",
             background: "#2d2d2d",
             color: "#f8f6f2",
-            padding: "16px 44px",
+            padding: "17px 44px",
             textDecoration: "none",
-            fontSize: 13,
-            letterSpacing: "0.2em",
-            borderRadius: 2,
+            fontSize: "12px",
+            letterSpacing: "0.25em",
+            borderRadius: "4px",
           }}
         >
           聯絡我們 →

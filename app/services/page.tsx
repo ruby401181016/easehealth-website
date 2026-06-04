@@ -1,14 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 
 export default function ServicesPage() {
-  const [hoveredTopic, setHoveredTopic] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
-  // 💡 嚴格參照 About 頁面的字體定義
-  const serifFont = "'Cormorant Garamond', 'Playfair Display', 'Noto Serif TC', Georgia, serif";
-  const sansFont = "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans TC', Helvetica, Arial, sans-serif";
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  const serifFont =
+    "'Cormorant Garamond', 'Playfair Display', 'Noto Serif TC', Georgia, serif";
+  const sansFont =
+    "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans TC', Helvetica, Arial, sans-serif";
 
   const services = [
     {
@@ -24,7 +32,7 @@ export default function ServicesPage() {
         { title: "久坐肩頸腰痛修復", link: "/programs/pain-relief" },
         { title: "從三分鐘開始：讓運動融入生活", link: "/programs/habits-lifestyle" },
       ],
-      image: "/麗源建設.jpg",
+      image: "/逢源科技.jpg",
     },
     {
       id: "02",
@@ -39,7 +47,7 @@ export default function ServicesPage() {
         { title: "Office Athlete", link: "/programs/workshops/office-athlete" },
         { title: "BODY RESET", link: "/programs/workshops/body-reset" },
       ],
-      image: "/逢源科技.jpg",
+      image: "/仁寶電腦.jpg",
     },
     {
       id: "03",
@@ -54,7 +62,7 @@ export default function ServicesPage() {
         { title: "練對比對多更重要", link: "/programs/movement/movement-quality" },
         { title: "上班族功能性訓練", link: "/programs/movement/functional-training" },
       ],
-      image: "/逢源科技增肌.jpg",
+      image: "/運動實作課程.jpg",
     },
   ];
 
@@ -79,66 +87,263 @@ export default function ServicesPage() {
         minHeight: "100vh",
         background: "#f8f6f2",
         color: "#2d2d2d",
-        fontFamily: sansFont, // 內文預設使用黑體
+        fontFamily: sansFont,
         WebkitFontSmoothing: "antialiased",
       }}
     >
       <Navbar />
 
-      {/* Hero Section */}
-      <section style={{ textAlign: "center", padding: "110px 24px 90px", background: "#ece7df" }}>
-        <p style={{ letterSpacing: "0.4em", fontSize: "12px", color: "#8a847c", marginBottom: 20, fontWeight: 400 }}>SERVICES</p>
-        <h1 style={{ fontFamily: serifFont, fontSize: "44px", marginBottom: 24, fontWeight: 400, letterSpacing: "0.03em" }}>服務項目</h1>
-        <p style={{ fontSize: "15px", color: "#666", maxWidth: "640px", margin: "0 auto", lineHeight: "2.1", fontWeight: 300, letterSpacing: "0.05em" }}>
-          從健康認知、身體覺察到實際行動，<br />EASE 協助企業打造員工願意參與的健康體驗。
+      <section
+        style={{
+          textAlign: "center",
+          padding: isMobile ? "56px 24px 48px" : "80px 24px 70px",
+          background: "#ece7df",
+        }}
+      >
+        <p
+          style={{
+            letterSpacing: "0.35em",
+            fontSize: "12px",
+            color: "#8a847c",
+            marginBottom: 20,
+            fontWeight: 400,
+          }}
+        >
+          SERVICES
+        </p>
+
+        <h1
+          style={{
+            fontFamily: serifFont,
+            fontSize: "clamp(42px, 8vw, 56px)",
+            marginBottom: 24,
+            fontWeight: 400,
+            letterSpacing: "0.04em",
+          }}
+        >
+          服務項目
+        </h1>
+
+        <p
+          style={{
+            fontSize: "15px",
+            color: "#5a5550",
+            maxWidth: "640px",
+            margin: "0 auto",
+            lineHeight: "2.1",
+            fontWeight: 300,
+            letterSpacing: "0.04em",
+          }}
+        >
+          從健康認知、身體覺察到實際行動，
+          <br style={{ display: isMobile ? "none" : "block" }} />
+          EASE 協助企業打造員工願意參與的健康體驗。
         </p>
       </section>
 
-      {/* Overview Grid */}
-      <section style={{ maxWidth: "1100px", margin: "0 auto", padding: "80px 24px 40px" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "32px" }}>
+      <section
+        style={{
+          maxWidth: "1200px",
+          margin: "0 auto",
+          padding: isMobile ? "40px 30px 90px" : "70px 24px 120px",
+        }}
+      >
+        <div style={{ display: "flex", flexDirection: "column", gap: isMobile ? "36px" : "56px" }}>
           {services.map((service) => (
-            <div key={service.id} style={{ borderTop: "1px solid rgba(0,0,0,0.14)", paddingTop: "24px" }}>
-              <p style={{ fontSize: "11px", color: "#aaa", letterSpacing: "0.2em", marginBottom: "16px", fontFamily: "monospace" }}>{service.id}</p>
-              <h3 style={{ fontFamily: serifFont, fontSize: "24px", fontWeight: 400, marginBottom: "12px", letterSpacing: "0.02em" }}>{service.title}</h3>
-              <p style={{ fontSize: "14px", color: "#666", lineHeight: "2.1", margin: 0, fontWeight: 300, letterSpacing: "0.04em" }}>{service.core}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+            <div
+              key={service.id}
+              style={{
+                background: "#fff",
+                borderRadius: "4px",
+                overflow: "hidden",
+                boxShadow: "0 20px 50px rgba(45,45,45,0.025)",
+                border: "1px solid rgba(0,0,0,0.03)",
+                display: "flex",
+                flexDirection: isMobile ? "column" : "row",
+              }}
+            >
+              <div
+                style={{
+                  flex: isMobile ? "1 1 100%" : "1 1 380px",
+                  maxWidth: isMobile ? "100%" : "430px",
+                  position: "relative",
+                  background: "#ece7df",
+                  minHeight: isMobile ? "240px" : "360px",
+                }}
+              >
+                <img
+                  src={service.image}
+                  alt={service.title}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    display: "block",
+                  }}
+                />
 
-      {/* Detailed Services */}
-      <section style={{ maxWidth: "1200px", margin: "0 auto", padding: "60px 24px 130px" }}>
-        <div style={{ display: "flex", flexDirection: "column", gap: "56px" }}>
-          {services.map((service) => (
-            <div key={service.id} style={{ background: "#fff", borderRadius: "4px", overflow: "hidden", boxShadow: "0 12px 36px rgba(0,0,0,0.015)", border: "1px solid rgba(0,0,0,0.03)", display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
-              <div style={{ flex: "1 1 380px", maxWidth: "430px", position: "relative", background: "#ece7df", minHeight: "360px" }}>
-                <img src={service.image} alt={service.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-                <span style={{ position: "absolute", top: "24px", left: "24px", fontSize: "20px", fontFamily: "monospace", color: "#fff", fontWeight: 300 }}>{service.id}</span>
+                <span
+                  style={{
+                    position: "absolute",
+                    top: "24px",
+                    left: "24px",
+                    fontSize: "20px",
+                    fontFamily: "monospace",
+                    color: "#fff",
+                    fontWeight: 300,
+                  }}
+                >
+                  {service.id}
+                </span>
               </div>
-              <div style={{ flex: "1 1 560px", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))" }}>
-                <div style={{ padding: "44px 40px", borderRight: "1px solid rgba(0,0,0,0.04)", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                  <p style={{ fontSize: "11px", color: "#aaa", letterSpacing: "0.2em", marginBottom: "12px" }}>〔 {service.core} 〕</p>
-                  <h2 style={{ fontFamily: serifFont, fontSize: "28px", fontWeight: 400, margin: "0 0 10px 0", letterSpacing: "0.03em" }}>{service.title}</h2>
-                  <p style={{ fontSize: "11px", letterSpacing: "0.22em", color: "#ccc", textTransform: "uppercase", marginBottom: "24px" }}>{service.enTitle}</p>
-                  <p style={{ fontSize: "14.5px", lineHeight: "2.1", color: "#666", fontWeight: 300, margin: 0, letterSpacing: "0.04em" }}>{service.desc}</p>
+
+              <div
+                style={{
+                  flex: "1 1 560px",
+                  display: "grid",
+                  gridTemplateColumns: isMobile ? "1fr" : "repeat(auto-fit, minmax(250px, 1fr))",
+                }}
+              >
+                <div
+                  style={{
+                    padding: isMobile ? "36px 28px 28px" : "44px 40px",
+                    borderRight: isMobile ? "none" : "1px solid rgba(0,0,0,0.04)",
+                    borderBottom: isMobile ? "1px solid rgba(0,0,0,0.04)" : "none",
+                  }}
+                >
+                  <p
+                    style={{
+                      fontSize: "11px",
+                      color: "#aaa",
+                      letterSpacing: "0.2em",
+                      marginBottom: "12px",
+                    }}
+                  >
+                    〔 {service.core} 〕
+                  </p>
+
+                  <h2
+                    style={{
+                      fontFamily: serifFont,
+                      fontSize: isMobile ? "30px" : "28px",
+                      fontWeight: 400,
+                      margin: "0 0 10px 0",
+                      letterSpacing: "0.03em",
+                    }}
+                  >
+                    {service.title}
+                  </h2>
+
+                  <p
+                    style={{
+                      fontSize: "11px",
+                      letterSpacing: "0.22em",
+                      color: "#ccc",
+                      textTransform: "uppercase",
+                      marginBottom: "24px",
+                      lineHeight: "1.8",
+                    }}
+                  >
+                    {service.enTitle}
+                  </p>
+
+                  <p
+                    style={{
+                      fontSize: "14.5px",
+                      lineHeight: "2.1",
+                      color: "#666",
+                      fontWeight: 300,
+                      margin: 0,
+                      letterSpacing: "0.04em",
+                    }}
+                  >
+                    {service.desc}
+                  </p>
                 </div>
-                <div style={{ padding: "44px 40px", display: "flex", flexDirection: "column", justifyContent: "center", gap: "30px" }}>
+
+                <div
+                  style={{
+                    padding: isMobile ? "32px 28px 36px" : "44px 40px",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "30px",
+                  }}
+                >
                   <div>
-                    <p style={{ fontSize: "11px", letterSpacing: "0.18em", color: "#aaa", marginBottom: "14px", textTransform: "uppercase" }}>適合形式</p>
+                    <p
+                      style={{
+                        fontSize: "11px",
+                        letterSpacing: "0.18em",
+                        color: "#aaa",
+                        marginBottom: "14px",
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      適合形式
+                    </p>
+
                     <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
                       {service.features.map((feature) => (
-                        <span key={feature} style={{ background: "#f8f6f2", color: "#666", fontSize: "12px", padding: "5px 12px", borderRadius: "2px", border: "1px solid rgba(0,0,0,0.03)", fontWeight: 300 }}>{feature}</span>
+                        <span
+                          key={feature}
+                          style={{
+                            background: "#f8f6f2",
+                            color: "#666",
+                            fontSize: "12px",
+                            padding: "5px 12px",
+                            borderRadius: "2px",
+                            border: "1px solid rgba(0,0,0,0.03)",
+                            fontWeight: 300,
+                          }}
+                        >
+                          {feature}
+                        </span>
                       ))}
                     </div>
                   </div>
+
                   <div>
-                    <p style={{ fontSize: "11px", letterSpacing: "0.18em", color: "#aaa", marginBottom: "16px", textTransform: "uppercase" }}>相關課程 <span style={{ color: "#ccc", marginLeft: "4px" }}>點擊查看</span></p>
+                    <p
+                      style={{
+                        fontSize: "11px",
+                        letterSpacing: "0.18em",
+                        color: "#aaa",
+                        marginBottom: "16px",
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      相關課程
+                      <span style={{ color: "#ccc", marginLeft: "4px" }}>點擊查看</span>
+                    </p>
+
                     <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                       {service.examples.map((example, exampleIndex) => (
-                        <a key={example.title} href={example.link} style={{ display: "grid", gridTemplateColumns: "28px 1fr auto", gap: "10px", alignItems: "start", textDecoration: "none" }}>
-                          <span style={{ fontSize: "11px", color: "#aaa", fontFamily: "monospace" }}>0{exampleIndex + 1}</span>
-                          <span style={{ fontSize: "14.5px", color: "#2d2d2d", lineHeight: "1.5", fontWeight: 300 }}>{example.title}</span>
+                        <a
+                          key={example.title}
+                          href={example.link}
+                          style={{
+                            display: "grid",
+                            gridTemplateColumns: "28px 1fr auto",
+                            gap: "10px",
+                            alignItems: "start",
+                            textDecoration: "none",
+                          }}
+                        >
+                          <span style={{ fontSize: "11px", color: "#aaa", fontFamily: "monospace" }}>
+                            0{exampleIndex + 1}
+                          </span>
+
+                          <span
+                            style={{
+                              fontSize: "14.5px",
+                              color: "#2d2d2d",
+                              lineHeight: "1.5",
+                              fontWeight: 300,
+                            }}
+                          >
+                            {example.title}
+                          </span>
+
                           <span style={{ fontSize: "12px", color: "#aaa" }}>→</span>
                         </a>
                       ))}
@@ -151,30 +356,121 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Why EASE Section */}
-      <section style={{ background: "#ece7df", padding: "100px 24px 110px" }}>
+      <section
+        style={{
+          background: "#ece7df",
+          padding: isMobile ? "72px 24px" : "96px 24px",
+        }}
+      >
         <div style={{ maxWidth: "980px", margin: "0 auto", textAlign: "center" }}>
-          <p style={{ fontSize: "11px", letterSpacing: "0.26em", color: "#8a847c", marginBottom: "20px", textTransform: "uppercase" }}>Why EASE</p>
-          <h2 style={{ fontFamily: serifFont, fontSize: "34px", fontWeight: 400, lineHeight: 1.3, marginBottom: "54px", letterSpacing: "0.03em" }}>不只是提供課程，更從企業需求出發</h2>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "32px", textAlign: "left" }}>
+          <p
+            style={{
+              fontSize: "11px",
+              letterSpacing: "0.26em",
+              color: "#8a847c",
+              marginBottom: "20px",
+              textTransform: "uppercase",
+            }}
+          >
+            Why EASE
+          </p>
+
+          <h2
+            style={{
+              fontFamily: serifFont,
+              fontSize: isMobile ? "34px" : "42px",
+              fontWeight: 400,
+              lineHeight: 1.35,
+              marginBottom: isMobile ? "40px" : "54px",
+              letterSpacing: "0.03em",
+            }}
+          >
+            不只是提供課程，更從企業需求出發
+          </h2>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: isMobile ? "1fr" : "repeat(auto-fit, minmax(260px, 1fr))",
+              gap: "28px",
+              textAlign: "left",
+            }}
+          >
             {strengths.map((item) => (
-              <div key={item.title} style={{ background: "rgba(255,255,255,0.6)", padding: "36px", borderRadius: "4px", border: "1px solid rgba(0,0,0,0.03)" }}>
-                <h3 style={{ fontFamily: serifFont, fontSize: "20px", fontWeight: 400, marginBottom: "16px", letterSpacing: "0.02em" }}>{item.title}</h3>
-                <p style={{ fontSize: "14.5px", lineHeight: "2.1", color: "#666", fontWeight: 300, margin: 0, letterSpacing: "0.04em" }}>{item.desc}</p>
+              <div
+                key={item.title}
+                style={{
+                  background: "rgba(255,255,255,0.6)",
+                  padding: isMobile ? "32px 28px" : "36px",
+                  borderRadius: "4px",
+                  border: "1px solid rgba(0,0,0,0.03)",
+                }}
+              >
+                <h3
+                  style={{
+                    fontFamily: serifFont,
+                    fontSize: "24px",
+                    fontWeight: 400,
+                    marginBottom: "16px",
+                    letterSpacing: "0.02em",
+                  }}
+                >
+                  {item.title}
+                </h3>
+
+                <p
+                  style={{
+                    fontSize: "14.5px",
+                    lineHeight: "2.1",
+                    color: "#666",
+                    fontWeight: 300,
+                    margin: 0,
+                    letterSpacing: "0.04em",
+                  }}
+                >
+                  {item.desc}
+                </p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 💡 補上最下方的引導區塊 (CTA Section) */}
-      <section style={{ padding: "140px 24px 160px", textAlign: "center", background: "#f8f6f2" }}>
-        <h2 style={{ fontFamily: serifFont, fontSize: "32px", fontWeight: 400, marginBottom: "24px", letterSpacing: "0.03em" }}>
+      <section
+        style={{
+          padding: isMobile ? "80px 24px 96px" : "120px 24px 140px",
+          textAlign: "center",
+          background: "#f8f6f2",
+        }}
+      >
+        <h2
+          style={{
+            fontFamily: serifFont,
+            fontSize: isMobile ? "34px" : "42px",
+            fontWeight: 400,
+            marginBottom: "24px",
+            letterSpacing: "0.03em",
+            lineHeight: 1.35,
+          }}
+        >
           不確定該辦講座、工作坊還是運動課程？
         </h2>
-        <p style={{ fontSize: "15px", color: "#666", lineHeight: "2.1", marginBottom: "44px", fontWeight: 300, letterSpacing: "0.05em" }}>
-          歡迎與 EASE 討論企業需求，<br />一起規劃最適合的健康活動。
+
+        <p
+          style={{
+            fontSize: "15px",
+            color: "#666",
+            lineHeight: "2.1",
+            marginBottom: "44px",
+            fontWeight: 300,
+            letterSpacing: "0.05em",
+          }}
+        >
+          歡迎與 EASE 討論企業需求，
+          <br />
+          一起規劃最適合的健康活動。
         </p>
+
         <a
           href="/contact"
           style={{
@@ -186,10 +482,9 @@ export default function ServicesPage() {
             fontSize: "12px",
             letterSpacing: "0.25em",
             borderRadius: "4px",
-            transition: "all 0.3s ease",
           }}
         >
-          企業合作洽詢 &rarr;
+          企業合作洽詢 →
         </a>
       </section>
     </main>

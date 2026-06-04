@@ -1,46 +1,28 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 const programTopics = [
-  {
-    number: "01",
-    title: "飲食體態",
-    label: "Nutrition",
-    href: "/programs/body-composition",
-  },
-  {
-    number: "02",
-    title: "健康數據",
-    label: "Health Data",
-    href: "/programs/health-data",
-  },
-  {
-    number: "03",
-    title: "運動實作",
-    label: "Movement",
-    href: "/programs/movement",
-  },
-  {
-    number: "04",
-    title: "疼痛修復",
-    label: "Recovery",
-    href: "/programs/pain-relief",
-  },
-  {
-    number: "05",
-    title: "習慣養成",
-    label: "Lifestyle",
-    href: "/programs/habits-lifestyle",
-  },
-  {
-    number: "06",
-    title: "健康工作坊",
-    label: "Workshops",
-    href: "/programs/workshops",
-  },
+  { number: "01", title: "飲食體態", label: "Nutrition", href: "/programs/body-composition" },
+  { number: "02", title: "健康數據", label: "Health Data", href: "/programs/health-data" },
+  { number: "03", title: "運動實作", label: "Movement", href: "/programs/movement" },
+  { number: "04", title: "疼痛修復", label: "Recovery", href: "/programs/pain-relief" },
+  { number: "05", title: "習慣養成", label: "Lifestyle", href: "/programs/habits-lifestyle" },
+  { number: "06", title: "健康工作坊", label: "Workshops", href: "/programs/workshops" },
 ];
 
 export default function Home() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   const serifFont =
     "'Cormorant Garamond', 'Playfair Display', 'Noto Serif TC', Georgia, serif";
 
@@ -62,18 +44,18 @@ export default function Home() {
       {/* Hero */}
       <section
         style={{
-          minHeight: "calc(100vh - 80px)",
+          minHeight: isMobile ? "auto" : "calc(100vh - 80px)",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
           textAlign: "center",
-          padding: "80px 24px 120px",
+          padding: isMobile ? "72px 24px 64px" : "80px 24px 120px",
         }}
       >
         <p
           style={{
-            letterSpacing: "0.4em",
+            letterSpacing: "0.35em",
             fontSize: "12px",
             marginBottom: 24,
             color: "#8a847c",
@@ -86,14 +68,14 @@ export default function Home() {
         <h1
           style={{
             fontFamily: serifFont,
-            fontSize: "clamp(48px, 7.5vw, 88px)",
+            fontSize: "clamp(52px, 15vw, 88px)",
             lineHeight: 1.1,
             fontWeight: 300,
             marginBottom: 32,
             letterSpacing: "-0.01em",
           }}
         >
-          Wellness
+          Health
           <br />
           <span style={{ fontStyle: "italic" }}>with</span> Ease
         </h1>
@@ -104,7 +86,7 @@ export default function Home() {
             fontSize: "15px",
             lineHeight: 2.1,
             color: "#5a5550",
-            marginBottom: 48,
+            marginBottom: 44,
             fontWeight: 300,
             letterSpacing: "0.05em",
           }}
@@ -115,8 +97,10 @@ export default function Home() {
         <div
           style={{
             display: "flex",
-            gap: 20,
-            flexWrap: "wrap",
+            flexDirection: isMobile ? "column" : "row",
+            gap: 16,
+            width: isMobile ? "100%" : "auto",
+            maxWidth: isMobile ? "320px" : "none",
             justifyContent: "center",
           }}
         >
@@ -131,6 +115,7 @@ export default function Home() {
               fontSize: 13,
               letterSpacing: "0.15em",
               textTransform: "uppercase",
+              textAlign: "center",
             }}
           >
             Explore Services
@@ -147,10 +132,129 @@ export default function Home() {
               fontSize: 13,
               letterSpacing: "0.15em",
               textTransform: "uppercase",
+              textAlign: "center",
             }}
           >
             View Case Studies
           </a>
+        </div>
+      </section>
+
+      {/* Programs - 手機版提前出現，雙欄掃讀 */}
+      <section
+        style={{
+          padding: isMobile ? "64px 26px 76px" : "110px 24px",
+          background: "#ece7df",
+        }}
+      >
+        <div style={{ maxWidth: "1120px", margin: "0 auto" }}>
+          <div
+            style={{
+              textAlign: "center",
+              marginBottom: isMobile ? 48 : 72,
+            }}
+          >
+            <p
+              style={{
+                letterSpacing: "0.35em",
+                fontSize: 12,
+                color: "#8a847c",
+                marginBottom: 20,
+                fontWeight: 400,
+              }}
+            >
+              PROGRAMS
+            </p>
+
+            <h2
+              style={{
+                fontFamily: serifFont,
+                fontSize: "clamp(34px, 8vw, 42px)",
+                lineHeight: 1.45,
+                fontWeight: 400,
+                marginBottom: 24,
+                letterSpacing: "0.03em",
+              }}
+            >
+              六大健康主題
+              <br />
+            
+            </h2>
+
+            <p
+              style={{
+                maxWidth: 680,
+                margin: "0 auto",
+                fontSize: 15,
+                lineHeight: 2.1,
+                color: "#5a5550",
+                fontWeight: 300,
+                letterSpacing: "0.05em",
+              }}
+            >
+              從飲食體態、健康數據、運動實作到疼痛修復，
+              EASE 協助企業設計更容易開始、也更容易持續的健康體驗。
+            </p>
+          </div>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: isMobile
+                ? "repeat(2, 1fr)"
+                : "repeat(auto-fit, minmax(260px, 1fr))",
+              columnGap: isMobile ? 22 : 48,
+              rowGap: isMobile ? 34 : 56,
+            }}
+          >
+            {programTopics.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                style={{
+                  textDecoration: "none",
+                  color: "#2d2d2d",
+                  borderTop: "1px solid rgba(45,45,45,0.16)",
+                  paddingTop: isMobile ? 18 : 26,
+                  display: "block",
+                }}
+              >
+                <p
+                  style={{
+                    fontSize: 12,
+                    color: "#aaa",
+                    fontFamily: "monospace",
+                    marginBottom: isMobile ? 16 : 22,
+                  }}
+                >
+                  {item.number}
+                </p>
+
+                <h3
+                  style={{
+                    fontFamily: serifFont,
+                    fontSize: isMobile ? 23 : 26,
+                    lineHeight: 1.35,
+                    fontWeight: 400,
+                    marginBottom: 8,
+                    letterSpacing: "0.04em",
+                  }}
+                >
+                  {item.title}
+                </h3>
+
+                <p
+                  style={{
+                    fontSize: 12,
+                    color: "#8a847c",
+                    letterSpacing: "0.08em",
+                  }}
+                >
+                  {item.label}
+                </p>
+              </a>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -159,10 +263,10 @@ export default function Home() {
         style={{
           maxWidth: "1200px",
           margin: "0 auto",
-          padding: "120px 24px",
+          padding: isMobile ? "76px 30px" : "110px 24px",
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-          gap: "60px",
+          gridTemplateColumns: isMobile ? "1fr" : "repeat(auto-fit, minmax(320px, 1fr))",
+          gap: isMobile ? "40px" : "60px",
           alignItems: "center",
         }}
       >
@@ -170,7 +274,6 @@ export default function Home() {
           style={{
             width: "100%",
             maxWidth: "440px",
-            maxHeight: "550px",
             aspectRatio: "4/5",
             margin: "0 auto",
             borderRadius: "4px",
@@ -191,13 +294,13 @@ export default function Home() {
           />
         </div>
 
-        <div style={{ padding: "0 20px" }}>
+        <div style={{ padding: isMobile ? 0 : "0 20px" }}>
           <p
             style={{
               letterSpacing: "0.3em",
               fontSize: 11,
               color: "#8a847c",
-              marginBottom: 24,
+              marginBottom: 20,
             }}
           >
             ABOUT
@@ -206,8 +309,8 @@ export default function Home() {
           <h2
             style={{
               fontFamily: serifFont,
-              fontSize: "clamp(28px, 4vw, 38px)",
-              lineHeight: 1.5,
+              fontSize: "clamp(34px, 8vw, 42px)",
+              lineHeight: 1.45,
               fontWeight: 400,
               marginBottom: 28,
               letterSpacing: "0.02em",
@@ -245,7 +348,7 @@ export default function Home() {
               display: "inline-block",
             }}
           >
-            Learn more about EASE &rarr;
+            Learn more about EASE →
           </a>
         </div>
       </section>
@@ -254,7 +357,7 @@ export default function Home() {
       <section
         style={{
           background: "#ece7df",
-          padding: "160px 24px",
+          padding: isMobile ? "76px 24px" : "120px 24px",
           textAlign: "center",
         }}
       >
@@ -263,7 +366,7 @@ export default function Home() {
             letterSpacing: "0.3em",
             fontSize: 11,
             color: "#8a847c",
-            marginBottom: 28,
+            marginBottom: 24,
           }}
         >
           PHILOSOPHY
@@ -272,18 +375,16 @@ export default function Home() {
         <h2
           style={{
             fontFamily: serifFont,
-            fontSize: "clamp(32px, 4.5vw, 52px)",
+            fontSize: "clamp(34px, 9vw, 52px)",
             lineHeight: 1.3,
             fontWeight: 300,
-            marginBottom: 36,
+            marginBottom: 32,
             letterSpacing: "0.01em",
           }}
         >
           Health is a lifestyle,
           <br />
-          <span style={{ fontStyle: "italic" }}>
-            not a short-term goal.
-          </span>
+          <span style={{ fontStyle: "italic" }}>not a short-term goal.</span>
         </h2>
 
         <p
@@ -301,125 +402,12 @@ export default function Home() {
         </p>
       </section>
 
-      {/* Programs */}
-      <section
-        style={{
-          padding: "140px 24px",
-          background: "#f8f6f2",
-        }}
-      >
-        <div style={{ maxWidth: "1120px", margin: "0 auto" }}>
-          <div
-            style={{
-              textAlign: "center",
-              marginBottom: 80,
-            }}
-          >
-            <p
-              style={{
-                letterSpacing: "0.3em",
-                fontSize: 11,
-                color: "#8a847c",
-                marginBottom: 24,
-              }}
-            >
-              PROGRAMS
-            </p>
-
-            <h2
-              style={{
-                fontFamily: serifFont,
-                fontSize: "clamp(30px, 4vw, 42px)",
-                lineHeight: 1.5,
-                fontWeight: 400,
-                marginBottom: 28,
-              }}
-            >
-              六大健康主題，
-              <br />
-              依照企業需求彈性設計
-            </h2>
-
-            <p
-              style={{
-                maxWidth: 680,
-                margin: "0 auto",
-                fontSize: 15,
-                lineHeight: 2.1,
-                color: "#5a5550",
-                fontWeight: 300,
-                letterSpacing: "0.05em",
-              }}
-            >
-              從飲食體態、健康數據、運動實作到疼痛修復，
-              EASE 協助企業設計更容易開始、
-              也更容易持續的健康體驗
-            </p>
-          </div>
-
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-              columnGap: 48,
-              rowGap: 56,
-            }}
-          >
-            {programTopics.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                style={{
-                  textDecoration: "none",
-                  color: "#2d2d2d",
-                  borderTop: "1px solid rgba(45,45,45,0.16)",
-                  paddingTop: 26,
-                  display: "block",
-                }}
-              >
-                <p
-                  style={{
-                    fontSize: 12,
-                    color: "#aaa",
-                    fontFamily: "monospace",
-                    marginBottom: 22,
-                  }}
-                >
-                  {item.number}
-                </p>
-
-                <h3
-                  style={{
-                    fontSize: 24,
-                    fontWeight: 400,
-                    marginBottom: 10,
-                    letterSpacing: "0.04em",
-                  }}
-                >
-                  {item.title}
-                </h3>
-
-                <p
-                  style={{
-                    fontSize: 13,
-                    color: "#8a847c",
-                    letterSpacing: "0.08em",
-                  }}
-                >
-                  {item.label}
-                </p>
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* CTA */}
       <section
         style={{
-          padding: "120px 24px",
+          padding: isMobile ? "76px 24px 92px" : "110px 24px",
           textAlign: "center",
-          background: "#ece7df",
+          background: "#f8f6f2",
         }}
       >
         <p
@@ -436,8 +424,8 @@ export default function Home() {
         <h2
           style={{
             fontFamily: serifFont,
-            fontSize: "clamp(30px, 4vw, 42px)",
-            lineHeight: 1.5,
+            fontSize: "clamp(34px, 8vw, 42px)",
+            lineHeight: 1.45,
             fontWeight: 400,
             marginBottom: 28,
           }}
@@ -457,6 +445,7 @@ export default function Home() {
           }}
         >
           讓我們一起設計更貼近團隊需求，
+          <br />
           也更容易持續的企業健康體驗
         </p>
 
@@ -473,7 +462,7 @@ export default function Home() {
             borderRadius: "4px",
           }}
         >
-          CONTACT EASE &rarr;
+          CONTACT EASE →
         </a>
       </section>
 
