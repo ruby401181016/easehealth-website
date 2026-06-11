@@ -6,7 +6,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 const receiverEmail =
   process.env.CONTACT_RECEIVER_EMAIL || "ruby@easehealthtw.com";
 
-const fromEmail = "EASE Health 團隊 <contact@easehealthtw.com>";
+const fromEmail = "EASE Health <contact@easehealthtw.com>";
 
 export async function POST(req: Request) {
   try {
