@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const receiverEmail =
-  process.env.CONTACT_RECEIVER_EMAIL || "ruby@easehealthtw.com";
+  process.env.CONTACT_RECEIVER_EMAIL || "contact@easehealthtw.com";
 
 const fromEmail = "EASE Health <contact@easehealthtw.com>";
 
@@ -24,13 +24,22 @@ export async function POST(req: Request) {
       message,
     } = body;
 
-    if (!name || !company || !phone || !email || !program || !topic || !message) {
+    if (
+      !name ||
+      !company ||
+      !phone ||
+      !email ||
+      !program ||
+      !topic ||
+      !message
+    ) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 }
       );
     }
 
+    // 管理員通知信
     const adminEmail = await resend.emails.send({
       from: fromEmail,
       to: receiverEmail,
@@ -57,64 +66,77 @@ export async function POST(req: Request) {
       `,
     });
 
-    const autoReply = await resend.emails.send({
-      from: fromEmail,
-      to: email,
-      replyTo: receiverEmail,
-      subject: "EASE Health｜我們已收到您的合作需求",
-      html: `
-        <div style="font-family: Arial, sans-serif; line-height:1.9; color:#2d2d2d;">
-          <p style="letter-spacing:0.2em; color:#8a847c; font-size:12px;">EASE HEALTH</p>
+    console.log("Admin email result:", adminEmail);
 
-          <h2 style="font-weight:400; margin-bottom:24px;">
-            我們已收到您的合作需求
-          </h2>
+    // 如果管理員信件失敗 -> 直接回傳錯誤
+    if (adminEmail.error) {
+      console.error("Admin email failed:", adminEmail.error);
 
-          <p>${name} 您好，</p>
-
-          <p>
-            感謝您提交 EASE Health 的合作洽詢。
-            我們已收到您的資訊，團隊將於 1-2 個工作天內與您聯繫。
-          </p>
-
-          <p>
-            您提交的合作方向為：<br />
-            <strong>${program}</strong><br />
-            <strong>${topic}</strong>
-          </p>
-
-          <p>
-            若有更詳細的活動時間、預算、企業需求或希望補充的資訊，
-            也歡迎直接回覆此信件。
-          </p>
-
-          <div style="margin-top:32px; padding-top:24px; border-top:1px solid #e5e0d8;">
-            <p style="margin:0;">
-              EASE Health<br />
-              Corporate Wellness Studio<br />
-              contact@easehealthtw.com
-            </p>
-          </div>
-        </div>
-      `,
-    });
-
-    console.log("Admin email:", adminEmail);
-    console.log("Auto reply:", autoReply);
-
-    if (adminEmail.error || autoReply.error) {
       return NextResponse.json(
         {
-          error: adminEmail.error?.message || autoReply.error?.message,
+          error: adminEmail.error.message,
         },
         { status: 500 }
       );
     }
 
+    // 自動回覆信（即使失敗也不影響表單成功）
+    try {
+      const autoReply = await resend.emails.send({
+        from: fromEmail,
+        to: email,
+        replyTo: receiverEmail,
+        subject: "EASE Health｜我們已收到您的合作需求",
+        html: `
+          <div style="font-family: Arial, sans-serif; line-height:1.9; color:#2d2d2d;">
+            <p style="letter-spacing:0.2em; color:#8a847c; font-size:12px;">
+              EASE HEALTH
+            </p>
+
+            <h2 style="font-weight:400; margin-bottom:24px;">
+              我們已收到您的合作需求
+            </h2>
+
+            <p>${name} 您好，</p>
+
+            <p>
+              感謝您提交 EASE Health 的合作洽詢。
+              我們已收到您的資訊，團隊將於 1-2 個工作天內與您聯繫。
+            </p>
+
+            <p>
+              您提交的合作方向為：<br />
+              <strong>${program}</strong><br />
+              <strong>${topic}</strong>
+            </p>
+
+            <p>
+              若有更詳細的活動時間、預算、企業需求或希望補充的資訊，
+              也歡迎直接回覆此信件。
+            </p>
+
+            <div style="margin-top:32px; padding-top:24px; border-top:1px solid #e5e0d8;">
+              <p style="margin:0;">
+                EASE Health<br />
+                Corporate Wellness Studio<br />
+                contact@easehealthtw.com
+              </p>
+            </div>
+          </div>
+        `,
+      });
+
+      console.log("Auto reply result:", autoReply);
+
+      if (autoReply.error) {
+        console.error("Auto reply failed:", autoReply.error);
+      }
+    } catch (autoReplyError) {
+      console.error("Auto reply exception:", autoReplyError);
+    }
+
     return NextResponse.json({
       success: true,
-      adminEmail: adminEmail.data,
-      autoReply: autoReply.data,
     });
   } catch (error) {
     console.error("Contact API error:", error);
