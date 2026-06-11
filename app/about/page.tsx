@@ -21,24 +21,33 @@ export default function AboutPage() {
   const backgrounds = [
     {
       id: "01",
-      title: "健康管理專業",
+      title: "醫護與健康管理專業",
       desc: "從健康風險、預防保健與生活型態管理角度出發，協助企業看見員工真正需要的健康支持。",
     },
     {
       id: "02",
-      title: "科技產業十年經驗",
-      desc: "長期理解久坐、高壓與高工時環境下的健康挑戰，熟悉企業文化與員工真實工作情境。",
+      title: "十年企業健康管理經驗",
+      desc: "長期投入企業健康促進、職場健康風險管理與員工健康活動規劃，熟悉科技產業久坐、高壓與高工時環境下的實際需求。",
     },
     {
       id: "03",
-      title: "國手與運動科學背景",
-      desc: "將競技訓練與運動科學轉化為一般上班族也能安全參與、容易開始的健康行動。",
+      title: "國手級運動背景",
+      desc: "將競技訓練、運動科學與實戰經驗，轉化為一般上班族也能安全參與、容易開始的健康行動。",
     },
     {
       id: "04",
-      title: "企業健康管理實務",
-      desc: "實際規劃企業健康講座、運動課程與健康促進活動，讓健康不只停留在理念，而能真正落地。",
+      title: "健康方案設計與落地",
+      desc: "從講座、工作坊到運動實作課程，依照企業文化與員工需求設計可真正參與、能持續執行的健康方案。",
     },
+  ];
+
+  const highlights = [
+    "十年企業健康管理經驗",
+    "台灣健美國手代表",
+    "女子世界錦標賽代表",
+    "曾獲 IFBB ELITE PRO 職業卡資格",
+    "累積 50+ 健美與功能性運動冠軍",
+    "多年企業健康講座與運動實作規劃經驗",
   ];
 
   const process = [
@@ -76,7 +85,7 @@ export default function AboutPage() {
         style={{
           maxWidth: "1180px",
           margin: "0 auto",
-          padding: isMobile ? "56px 30px 80px" : "90px 24px 120px",
+          padding: isMobile ? "56px 30px 72px" : "90px 24px 100px",
           display: "flex",
           gap: isMobile ? "40px" : "70px",
           alignItems: "center",
@@ -145,10 +154,98 @@ export default function AboutPage() {
               letterSpacing: "0.05em",
             }}
           >
-            EASE 結合健康管理專業、科技產業經驗、國手競技背景與企業健康管理實務，
+            EASE 結合醫護專業、國手級運動背景與十年以上企業健康管理經驗，
             協助企業透過講座、工作坊與運動實作課程，
             打造員工更容易參與、也更容易持續的健康體驗。
           </p>
+        </div>
+      </section>
+
+      <section
+        style={{
+          maxWidth: "1180px",
+          margin: "0 auto",
+          padding: isMobile ? "0 30px 80px" : "0 24px 110px",
+        }}
+      >
+        <div
+          style={{
+            background: "#fff",
+            borderRadius: "6px",
+            padding: isMobile ? "36px 28px" : "56px 64px",
+            boxShadow: "0 20px 40px rgba(0,0,0,0.03)",
+            border: "1px solid rgba(0,0,0,0.04)",
+          }}
+        >
+          <p
+            style={{
+              fontSize: "11px",
+              letterSpacing: "0.3em",
+              color: "#8a847c",
+              marginBottom: "18px",
+              textTransform: "uppercase",
+            }}
+          >
+            Professional Highlights
+          </p>
+
+          <h2
+            style={{
+              fontFamily: serifFont,
+              fontSize: isMobile ? "30px" : "38px",
+              fontWeight: 400,
+              lineHeight: 1.35,
+              letterSpacing: "0.03em",
+              marginBottom: isMobile ? "32px" : "42px",
+            }}
+          >
+            專業背景與實務經驗
+            <br />
+            建立企業健康
+          </h2>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)",
+              gap: "24px 48px",
+              marginBottom: "42px",
+            }}
+          >
+            {highlights.map((item) => (
+              <div
+                key={item}
+                style={{
+                  paddingBottom: "18px",
+                  borderBottom: "1px solid rgba(0,0,0,0.06)",
+                  fontSize: "15px",
+                  color: "#444",
+                  letterSpacing: "0.04em",
+                  lineHeight: "1.9",
+                  fontWeight: 300,
+                }}
+              >
+                {item}
+              </div>
+            ))}
+          </div>
+
+          <a
+            href="/profile/EASE-Ruby-Kuo-Profile.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: "inline-block",
+              textDecoration: "none",
+              color: "#2d2d2d",
+              fontSize: "12px",
+              letterSpacing: "0.25em",
+              borderBottom: "1px solid #2d2d2d",
+              paddingBottom: "10px",
+            }}
+          >
+            DOWNLOAD FULL PROFILE →
+          </a>
         </div>
       </section>
 

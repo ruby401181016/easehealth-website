@@ -61,6 +61,7 @@ export default function ContactPage() {
   const [selectedProgram, setSelectedProgram] = useState("");
   const [selectedTopic, setSelectedTopic] = useState("");
   const [isMobile, setIsMobile] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth <= 768);
@@ -107,9 +108,51 @@ export default function ContactPage() {
     letterSpacing: "0.04em",
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSubmitted(true);
+    setIsSubmitting(true);
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    const programKey = formData.get("program") as ProgramKey | null;
+    const programLabel = programKey ? programTopics[programKey]?.label : "";
+
+    const data = {
+      name: formData.get("name"),
+      company: formData.get("company"),
+      position: formData.get("position"),
+      phone: formData.get("phone"),
+      email: formData.get("email"),
+      program: programLabel || formData.get("program"),
+      topic: formData.get("topic"),
+      participants: formData.get("participants"),
+      message: formData.get("message"),
+    };
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        alert("送出失敗，請稍後再試，或直接寄信至 contact@easehealthtw.com");
+        return;
+      }
+
+      setSubmitted(true);
+      form.reset();
+      setSelectedProgram("");
+      setSelectedTopic("");
+    } catch {
+      alert("送出失敗，請稍後再試，或直接寄信至 contact@easehealthtw.com");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -319,20 +362,21 @@ export default function ContactPage() {
 
                 <button
                   type="submit"
+                  disabled={isSubmitting}
                   style={{
                     marginTop: "16px",
                     width: "100%",
                     padding: "18px 24px",
                     border: "none",
-                    background: "#2d2d2d",
+                    background: isSubmitting ? "#8a847c" : "#2d2d2d",
                     color: "#f8f6f2",
                     fontSize: "12px",
                     letterSpacing: "0.25em",
-                    cursor: "pointer",
+                    cursor: isSubmitting ? "not-allowed" : "pointer",
                     borderRadius: "4px",
                   }}
                 >
-                  送出合作需求 →
+                  {isSubmitting ? "送出中..." : "送出合作需求 →"}
                 </button>
               </div>
             </form>
