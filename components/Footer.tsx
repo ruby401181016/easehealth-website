@@ -79,7 +79,7 @@ export default function Footer() {
             CONTACT
           </p>
 
-          <p style={contactTextStyle}>Instagram：easehealth</p>
+          <p style={contactTextStyle}>Instagram：easehealthtw</p>
           <p style={contactTextStyle}>Email：contact@easehealthtw.com</p>
           <p style={contactTextStyle}>Location：Taiwan</p>
         </div>

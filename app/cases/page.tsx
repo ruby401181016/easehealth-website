@@ -358,7 +358,7 @@ export default function CasesPage() {
               CONTACT
             </p>
 
-            <p style={footerContactTextStyle}>Instagram：easehealth</p>
+            <p style={footerContactTextStyle}>Instagram：easehealthtw</p>
             <p style={footerContactTextStyle}>Email：contact@easehealth.com</p>
             <p style={footerContactTextStyle}>Location：Taiwan</p>
           </div>
