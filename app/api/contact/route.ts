@@ -4,12 +4,19 @@ import { NextResponse } from "next/server";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const receiverEmail =
-  process.env.CONTACT_RECEIVER_EMAIL || "contact@easehealthtw.com";
+  process.env.CONTACT_RECEIVER_EMAIL || "ruby@easehealthtw.com";
 
-const fromEmail = "EASE Health <contact@easehealthtw.com>";
+const fromEmail = "EASE Health <ruby@easehealthtw.com>";
 
 export async function POST(req: Request) {
   try {
+    if (!process.env.RESEND_API_KEY) {
+      return NextResponse.json(
+        { error: "Missing RESEND_API_KEY" },
+        { status: 500 }
+      );
+    }
+
     const body = await req.json();
 
     const {
@@ -39,7 +46,6 @@ export async function POST(req: Request) {
       );
     }
 
-    // 管理員通知信
     const adminEmail = await resend.emails.send({
       from: fromEmail,
       to: receiverEmail,
@@ -68,19 +74,15 @@ export async function POST(req: Request) {
 
     console.log("Admin email result:", adminEmail);
 
-    // 如果管理員信件失敗 -> 直接回傳錯誤
     if (adminEmail.error) {
       console.error("Admin email failed:", adminEmail.error);
 
       return NextResponse.json(
-        {
-          error: adminEmail.error.message,
-        },
+        { error: adminEmail.error.message },
         { status: 500 }
       );
     }
 
-    // 自動回覆信（即使失敗也不影響表單成功）
     try {
       const autoReply = await resend.emails.send({
         from: fromEmail,
@@ -119,7 +121,7 @@ export async function POST(req: Request) {
               <p style="margin:0;">
                 EASE Health<br />
                 Corporate Wellness Studio<br />
-                contact@easehealthtw.com
+                ruby@easehealthtw.com
               </p>
             </div>
           </div>
@@ -135,9 +137,7 @@ export async function POST(req: Request) {
       console.error("Auto reply exception:", autoReplyError);
     }
 
-    return NextResponse.json({
-      success: true,
-    });
+    return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Contact API error:", error);
 
