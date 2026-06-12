@@ -199,9 +199,9 @@ export default function AboutPage() {
               marginBottom: isMobile ? "32px" : "42px",
             }}
           >
-            專業背景與實務經驗
+            講師背景與專業經歷
             <br />
-            建立企業健康
+            
           </h2>
 
           <div
